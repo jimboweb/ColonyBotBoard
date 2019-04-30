@@ -10,8 +10,10 @@ class ColonyBot{
         this.nextSiteNumber=1;
         this.speed = 5;
         this.moving = false;
-        this.commandQueue = [];
+        this.commandQueue = new CommandQueue();
     }
+
+    addCommand=(fn)=>this.commandQueue.addCommand(fn);
 
     rotateToNext=()=>{
         this.sprite.rotation=map.getAngleByIndex(this.currentSiteNumber, this.nextSiteNumber);
@@ -30,16 +32,16 @@ class ColonyBot{
             this.location = currentSite.location;
             this.sprite.location = this.location;
             this.rotateToNext();
-        } else {
-            if(this.isAtNextSite()){
-                this.moving=false;
-            }
+            this.nextCommand();
+        } else if(this.isAtNextSite()){
+            this.moving=false;
         }
     };
 
     turn=(amount)=>{
         this.nextSiteNumber = ((this.currentSiteNumber%amount)+amount)%amount;
         this.rotateToNext();
+        this.nextCommand();
     };
 
     turnLeft=()=>{
@@ -64,7 +66,7 @@ class ColonyBot{
     };
     nextCommand = () =>{
         if(this.commandQueue.length>0){
-            this.commandQueue.pop()();
+            this.commandQueue.nextCommand();
         }
     };
 }

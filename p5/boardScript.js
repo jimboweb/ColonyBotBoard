@@ -1,6 +1,6 @@
 
 
-let shipImage, ship;
+let shipImage, ship,colonyBot;
 
 function preload(){
     shipImage = loadAnimation("img/mover.svg");
@@ -12,12 +12,20 @@ function setup(){
     background(0,0,0);
     let canvas = createCanvas(600,300);
     canvas.parent('board');
-    const colonyBot = new ColonyBot(boardMap);
+    colonyBot = new ColonyBot(boardMap);
+    colonyBot.addCommand(colonyBot.moveForward());
+    colonyBot.addCommand((colonyBot.turnLeft()));
+    colonyBot.addCommand(colonyBot.moveForward());
+    colonyBot.addCommand(colonyBot.moveForward());
+    colonyBot.addCommand(colonyBot.turnRight());
+    colonyBot.addCommand(colonyBot.turnRight());
+    colonyBot.addCommand(colonyBot.moveForward());
     noLoop();
 }
 
 function draw(){
     drawSprites();
+    colonyBot.draw();
 }
 
 
