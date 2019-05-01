@@ -2377,7 +2377,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nvar sound, amplitude, cnv;\n\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  cnv = createCanvas(100,100);\n  amplitude = new p5.Amplitude();\n\n  // start / stop the sound when canvas is clicked\n  cnv.mouseClicked(function() {\n    if (sound.isPlaying() ){\n      sound.stop();\n    } else {\n      sound.play();\n    }\n  });\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\n\n</code></div>"
+                "\n<div><code>\nvar sound, amplitude, cnv;\n\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  cnv = createCanvas(100,100);\n  amplitude = new p5.Amplitude();\n\n  // start / stop the sound when canvas is clicked\n  cnv.mouseClicked(function() {\n    if (sound.isPlaying() ){\n      sound.stop();\n    } else {\n      sound.play();\n    }\n  });\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = mapBoard(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\n\n</code></div>"
             ]
         },
         "p5.FFT": {
@@ -2410,7 +2410,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nfunction preload(){\n  sound = loadSound('assets/Damscray_DancingTiger.mp3');\n}\n\nfunction setup(){\n  var cnv = createCanvas(100,100);\n  cnv.mouseClicked(togglePlay);\n  fft = new p5.FFT();\n  sound.amp(0.2);\n}\n\nfunction draw(){\n  background(0);\n\n  var spectrum = fft.analyze();\n  noStroke();\n  fill(0,255,0); // spectrum is green\n  for (var i = 0; i< spectrum.length; i++){\n    var x = map(i, 0, spectrum.length, 0, width);\n    var h = -height + map(spectrum[i], 0, 255, height, 0);\n    rect(x, height, width / spectrum.length, h )\n  }\n\n  var waveform = fft.waveform();\n  noFill();\n  beginShape();\n  stroke(255,0,0); // waveform is red\n  strokeWeight(1);\n  for (var i = 0; i< waveform.length; i++){\n    var x = map(i, 0, waveform.length, 0, width);\n    var y = map( waveform[i], -1, 1, 0, height);\n    vertex(x,y);\n  }\n  endShape();\n\n  text('click to play/pause', 4, 10);\n}\n\n// fade sound if mouse is over canvas\nfunction togglePlay() {\n  if (sound.isPlaying()) {\n    sound.pause();\n  } else {\n    sound.loop();\n  }\n}\n</code></div>"
+                "\n<div><code>\nfunction preload(){\n  sound = loadSound('assets/Damscray_DancingTiger.mp3');\n}\n\nfunction setup(){\n  var cnv = createCanvas(100,100);\n  cnv.mouseClicked(togglePlay);\n  fft = new p5.FFT();\n  sound.amp(0.2);\n}\n\nfunction draw(){\n  background(0);\n\n  var spectrum = fft.analyze();\n  noStroke();\n  fill(0,255,0); // spectrum is green\n  for (var i = 0; i< spectrum.length; i++){\n    var x = mapBoard(i, 0, spectrum.length, 0, width);\n    var h = -height + mapBoard(spectrum[i], 0, 255, height, 0);\n    rect(x, height, width / spectrum.length, h )\n  }\n\n  var waveform = fft.waveform();\n  noFill();\n  beginShape();\n  stroke(255,0,0); // waveform is red\n  strokeWeight(1);\n  for (var i = 0; i< waveform.length; i++){\n    var x = mapBoard(i, 0, waveform.length, 0, width);\n    var y = mapBoard( waveform[i], -1, 1, 0, height);\n    vertex(x,y);\n  }\n  endShape();\n\n  text('click to play/pause', 4, 10);\n}\n\n// fade sound if mouse is over canvas\nfunction togglePlay() {\n  if (sound.isPlaying()) {\n    sound.pause();\n  } else {\n    sound.loop();\n  }\n}\n</code></div>"
             ]
         },
         "p5.Signal": {
@@ -2619,7 +2619,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nvar pulse;\nfunction setup() {\n  background(0);\n\n  // Create and start the pulse wave oscillator\n  pulse = new p5.Pulse();\n  pulse.amp(0.5);\n  pulse.freq(220);\n  pulse.start();\n}\n\nfunction draw() {\n  var w = map(mouseX, 0, width, 0, 1);\n  w = constrain(w, 0, 1);\n  pulse.width(w)\n}\n</code></div>"
+                "\n<div><code>\nvar pulse;\nfunction setup() {\n  background(0);\n\n  // Create and start the pulse wave oscillator\n  pulse = new p5.Pulse();\n  pulse.amp(0.5);\n  pulse.freq(220);\n  pulse.start();\n}\n\nfunction draw() {\n  var w = mapBoard(mouseX, 0, width, 0, 1);\n  w = constrain(w, 0, 1);\n  pulse.width(w)\n}\n</code></div>"
             ]
         },
         "p5.Noise": {
@@ -2746,7 +2746,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nvar fft, noise, filter;\n\nfunction setup() {\n  fill(255, 40, 255);\n\n  filter = new p5.BandPass();\n\n  noise = new p5.Noise();\n  // disconnect unfiltered noise,\n  // and connect to filter\n  noise.disconnect();\n  noise.connect(filter);\n  noise.start();\n\n  fft = new p5.FFT();\n}\n\nfunction draw() {\n  background(30);\n\n  // set the BandPass frequency based on mouseX\n  var freq = map(mouseX, 0, width, 20, 10000);\n  filter.freq(freq);\n  // give the filter a narrow band (lower res = wider bandpass)\n  filter.res(50);\n\n  // draw filtered spectrum\n  var spectrum = fft.analyze();\n  noStroke();\n  for (var i = 0; i < spectrum.length; i++) {\n    var x = map(i, 0, spectrum.length, 0, width);\n    var h = -height + map(spectrum[i], 0, 255, height, 0);\n    rect(x, height, width/spectrum.length, h);\n  }\n\n  isMouseOverCanvas();\n}\n\nfunction isMouseOverCanvas() {\n  var mX = mouseX, mY = mouseY;\n  if (mX > 0 && mX < width && mY < height && mY > 0) {\n    noise.amp(0.5, 0.2);\n  } else {\n    noise.amp(0, 0.2);\n  }\n}\n</code></div>"
+                "\n<div><code>\nvar fft, noise, filter;\n\nfunction setup() {\n  fill(255, 40, 255);\n\n  filter = new p5.BandPass();\n\n  noise = new p5.Noise();\n  // disconnect unfiltered noise,\n  // and connect to filter\n  noise.disconnect();\n  noise.connect(filter);\n  noise.start();\n\n  fft = new p5.FFT();\n}\n\nfunction draw() {\n  background(30);\n\n  // set the BandPass frequency based on mouseX\n  var freq = mapBoard(mouseX, 0, width, 20, 10000);\n  filter.freq(freq);\n  // give the filter a narrow band (lower res = wider bandpass)\n  filter.res(50);\n\n  // draw filtered spectrum\n  var spectrum = fft.analyze();\n  noStroke();\n  for (var i = 0; i < spectrum.length; i++) {\n    var x = mapBoard(i, 0, spectrum.length, 0, width);\n    var h = -height + mapBoard(spectrum[i], 0, 255, height, 0);\n    rect(x, height, width/spectrum.length, h);\n  }\n\n  isMouseOverCanvas();\n}\n\nfunction isMouseOverCanvas() {\n  var mX = mouseX, mY = mouseY;\n  if (mX > 0 && mX < width && mY < height && mY > 0) {\n    noise.amp(0.5, 0.2);\n  } else {\n    noise.amp(0, 0.2);\n  }\n}\n</code></div>"
             ]
         },
         "p5.LowPass": {
@@ -3150,7 +3150,7 @@ module.exports={
             "description": "<p>A gain node is usefull to set the relative volume of sound.\nIt&#39;s typically used to build mixers.</p>\n",
             "is_constructor": 1,
             "example": [
-                "\n<div><code>\n\n // load two soundfile and crossfade beetween them\n var sound1,sound2;\n var gain1, gain2, gain3;\n\n function preload(){\n soundFormats('ogg', 'mp3');\n sound1 = loadSound('assets/Damscray_-_Dancing_Tiger_01');\n sound2 = loadSound('assets/beat.mp3');\n }\n\n function setup() {\n createCanvas(400,200);\n\n // create a 'master' gain to which we will connect both soundfiles\n gain3 = new p5.Gain();\n gain3.connect();\n\n // setup first sound for playing\n sound1.rate(1);\n sound1.loop();\n sound1.disconnect(); // diconnect from p5 output\n\n gain1 = new p5.Gain(); // setup a gain node\n gain1.setInput(sound1); // connect the first sound to its input\n gain1.connect(gain3); // connect its output to the 'master'\n\n sound2.rate(1);\n sound2.disconnect();\n sound2.loop();\n\n gain2 = new p5.Gain();\n gain2.setInput(sound2);\n gain2.connect(gain3);\n\n }\n\n function draw(){\n background(180);\n\n // calculate the horizontal distance beetween the mouse and the right of the screen\n var d = dist(mouseX,0,width,0);\n\n // map the horizontal position of the mouse to values useable for volume control of sound1\n var vol1 = map(mouseX,0,width,0,1);\n var vol2 = 1-vol1; // when sound1 is loud, sound2 is quiet and vice versa\n\n gain1.amp(vol1,0.5,0);\n gain2.amp(vol2,0.5,0);\n\n // map the vertical position of the mouse to values useable for 'master volume control'\n var vol3 = map(mouseY,0,height,0,1);\n gain3.amp(vol3,0.5,0);\n }\n</code></div>\n"
+                "\n<div><code>\n\n // load two soundfile and crossfade beetween them\n var sound1,sound2;\n var gain1, gain2, gain3;\n\n function preload(){\n soundFormats('ogg', 'mp3');\n sound1 = loadSound('assets/Damscray_-_Dancing_Tiger_01');\n sound2 = loadSound('assets/beat.mp3');\n }\n\n function setup() {\n createCanvas(400,200);\n\n // create a 'master' gain to which we will connect both soundfiles\n gain3 = new p5.Gain();\n gain3.connect();\n\n // setup first sound for playing\n sound1.rate(1);\n sound1.loop();\n sound1.disconnect(); // diconnect from p5 output\n\n gain1 = new p5.Gain(); // setup a gain node\n gain1.setInput(sound1); // connect the first sound to its input\n gain1.connect(gain3); // connect its output to the 'master'\n\n sound2.rate(1);\n sound2.disconnect();\n sound2.loop();\n\n gain2 = new p5.Gain();\n gain2.setInput(sound2);\n gain2.connect(gain3);\n\n }\n\n function draw(){\n background(180);\n\n // calculate the horizontal distance beetween the mouse and the right of the screen\n var d = dist(mouseX,0,width,0);\n\n // mapBoard the horizontal position of the mouse to values useable for volume control of sound1\n var vol1 = mapBoard(mouseX,0,width,0,1);\n var vol2 = 1-vol1; // when sound1 is loud, sound2 is quiet and vice versa\n\n gain1.amp(vol1,0.5,0);\n gain2.amp(vol2,0.5,0);\n\n // mapBoard the vertical position of the mouse to values useable for 'master volume control'\n var vol3 = mapBoard(mouseY,0,height,0,1);\n gain3.amp(vol3,0.5,0);\n }\n</code></div>\n"
             ]
         },
         "p5.AudioVoice": {
@@ -5399,7 +5399,7 @@ module.exports={
             ],
             "chainable": 1,
             "example": [
-                "\n<div>\n<code>\n// Move the mouse left and right to see the curve change\n\nfunction setup() {\n  createCanvas(100, 100);\n  noFill();\n}\n\nfunction draw() {\n  background(204);\n  let t = map(mouseX, 0, width, -5, 5);\n  curveTightness(t);\n  beginShape();\n  curveVertex(10, 26);\n  curveVertex(10, 26);\n  curveVertex(83, 24);\n  curveVertex(83, 61);\n  curveVertex(25, 65);\n  curveVertex(25, 65);\n  endShape();\n}\n</code>\n</div>"
+                "\n<div>\n<code>\n// Move the mouse left and right to see the curve change\n\nfunction setup() {\n  createCanvas(100, 100);\n  noFill();\n}\n\nfunction draw() {\n  background(204);\n  let t = mapBoard(mouseX, 0, width, -5, 5);\n  curveTightness(t);\n  beginShape();\n  curveVertex(10, 26);\n  curveVertex(10, 26);\n  curveVertex(83, 24);\n  curveVertex(83, 61);\n  curveVertex(25, 65);\n  curveVertex(25, 65);\n  endShape();\n}\n</code>\n</div>"
             ],
             "alt": "Line shaped like right-facing arrow,points move with mouse-x and warp shape.",
             "class": "p5",
@@ -8027,7 +8027,7 @@ module.exports={
             ],
             "chainable": 1,
             "example": [
-                "\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  background(200);\n  // Equivalent to translate(x, y);\n  applyMatrix(1, 0, 0, 1, 40 + step, 50);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  background(200);\n  translate(50, 50);\n  // Equivalent to scale(x, y);\n  applyMatrix(1 / step, 0, 0, 1 / step, 0, 0);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  var angle = map(step, 0, 20, 0, TWO_PI);\n  var cos_a = cos(angle);\n  var sin_a = sin(angle);\n  background(200);\n  translate(50, 50);\n  // Equivalent to rotate(angle);\n  applyMatrix(cos_a, sin_a, -sin_a, cos_a, 0, 0);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  var angle = map(step, 0, 20, -PI / 4, PI / 4);\n  background(200);\n  translate(50, 50);\n  // equivalent to shearX(angle);\n  var shear_factor = 1 / tan(PI / 2 - angle);\n  applyMatrix(1, 0, shear_factor, 1, 0, 0);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div modernizr='webgl'>\n<code>\nfunction setup() {\n  createCanvas(100, 100, WEBGL);\n  noFill();\n}\n\nfunction draw() {\n  background(200);\n  rotateY(PI / 6);\n  stroke(153);\n  box(35);\n  var rad = millis() / 1000;\n  // Set rotation angles\n  var ct = cos(rad);\n  var st = sin(rad);\n  // Matrix for rotation around the Y axis\n  applyMatrix(  ct, 0.0,  st,  0.0,\n               0.0, 1.0, 0.0,  0.0,\n               -st, 0.0,  ct,  0.0,\n               0.0, 0.0, 0.0,  1.0);\n  stroke(255);\n  box(50);\n}\n</code>\n</div>"
+                "\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  background(200);\n  // Equivalent to translate(x, y);\n  applyMatrix(1, 0, 0, 1, 40 + step, 50);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  background(200);\n  translate(50, 50);\n  // Equivalent to scale(x, y);\n  applyMatrix(1 / step, 0, 0, 1 / step, 0, 0);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  var angle = mapBoard(step, 0, 20, 0, TWO_PI);\n  var cos_a = cos(angle);\n  var sin_a = sin(angle);\n  background(200);\n  translate(50, 50);\n  // Equivalent to rotate(angle);\n  applyMatrix(cos_a, sin_a, -sin_a, cos_a, 0, 0);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div>\n<code>\nfunction setup() {\n  frameRate(10);\n  rectMode(CENTER);\n}\n\nfunction draw() {\n  var step = frameCount % 20;\n  var angle = mapBoard(step, 0, 20, -PI / 4, PI / 4);\n  background(200);\n  translate(50, 50);\n  // equivalent to shearX(angle);\n  var shear_factor = 1 / tan(PI / 2 - angle);\n  applyMatrix(1, 0, shear_factor, 1, 0, 0);\n  rect(0, 0, 50, 50);\n}\n</code>\n</div>\n<div modernizr='webgl'>\n<code>\nfunction setup() {\n  createCanvas(100, 100, WEBGL);\n  noFill();\n}\n\nfunction draw() {\n  background(200);\n  rotateY(PI / 6);\n  stroke(153);\n  box(35);\n  var rad = millis() / 1000;\n  // Set rotation angles\n  var ct = cos(rad);\n  var st = sin(rad);\n  // Matrix for rotation around the Y axis\n  applyMatrix(  ct, 0.0,  st,  0.0,\n               0.0, 1.0, 0.0,  0.0,\n               -st, 0.0,  ct,  0.0,\n               0.0, 0.0, 0.0,  1.0);\n  stroke(255);\n  box(50);\n}\n</code>\n</div>"
             ],
             "alt": "A rectangle translating to the right\nA rectangle shrinking to the center\nA rectangle rotating clockwise about the center\nA rectangle shearing",
             "class": "p5",
@@ -13059,7 +13059,7 @@ module.exports={
                 "type": "Integer"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n  // map, mouseX between 0 and 5.\n  let ax = map(mouseX, 0, 100, 0, 5);\n  let ay = 66;\n\n  //Get the ceiling of the mapped number.\n  let bx = ceil(map(mouseX, 0, 100, 0, 5));\n  let by = 33;\n\n  // Multiply the mapped numbers by 20 to more easily\n  // see the changes.\n  stroke(0);\n  fill(0);\n  line(0, ay, ax * 20, ay);\n  line(0, by, bx * 20, by);\n\n  // Reformat the float returned by map and draw it.\n  noStroke();\n  text(nfc(ax, 2), ax, ay - 5);\n  text(nfc(bx, 1), bx, by - 5);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n  // mapBoard, mouseX between 0 and 5.\n  let ax = mapBoard(mouseX, 0, 100, 0, 5);\n  let ay = 66;\n\n  //Get the ceiling of the mapped number.\n  let bx = ceil(mapBoard(mouseX, 0, 100, 0, 5));\n  let by = 33;\n\n  // Multiply the mapped numbers by 20 to more easily\n  // see the changes.\n  stroke(0);\n  fill(0);\n  line(0, ay, ax * 20, ay);\n  line(0, by, bx * 20, by);\n\n  // Reformat the float returned by mapBoard and draw it.\n  noStroke();\n  text(nfc(ax, 2), ax, ay - 5);\n  text(nfc(bx, 1), bx, by - 5);\n}\n</code></div>"
             ],
             "alt": "2 horizontal lines & number sets. increase with mouse x. bottom to 2 decimals",
             "class": "p5",
@@ -13207,7 +13207,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n\n  // Compute the exp() function with a value between 0 and 2\n  let xValue = map(mouseX, 0, width, 0, 2);\n  let yValue = exp(xValue);\n\n  let y = map(yValue, 0, 8, height, 0);\n\n  let legend = 'exp (' + nfc(xValue, 3) + ')\\n= ' + nf(yValue, 1, 4);\n  stroke(150);\n  line(mouseX, y, mouseX, height);\n  fill(0);\n  text(legend, 5, 15);\n  noStroke();\n  ellipse(mouseX, y, 7, 7);\n\n  // Draw the exp(x) curve,\n  // over the domain of x from 0 to 2\n  noFill();\n  stroke(0);\n  beginShape();\n  for (let x = 0; x < width; x++) {\n    xValue = map(x, 0, width, 0, 2);\n    yValue = exp(xValue);\n    y = map(yValue, 0, 8, height, 0);\n    vertex(x, y);\n  }\n\n  endShape();\n  line(0, 0, 0, height);\n  line(0, height - 1, width, height - 1);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n\n  // Compute the exp() function with a value between 0 and 2\n  let xValue = mapBoard(mouseX, 0, width, 0, 2);\n  let yValue = exp(xValue);\n\n  let y = mapBoard(yValue, 0, 8, height, 0);\n\n  let legend = 'exp (' + nfc(xValue, 3) + ')\\n= ' + nf(yValue, 1, 4);\n  stroke(150);\n  line(mouseX, y, mouseX, height);\n  fill(0);\n  text(legend, 5, 15);\n  noStroke();\n  ellipse(mouseX, y, 7, 7);\n\n  // Draw the exp(x) curve,\n  // over the domain of x from 0 to 2\n  noFill();\n  stroke(0);\n  beginShape();\n  for (let x = 0; x < width; x++) {\n    xValue = mapBoard(x, 0, width, 0, 2);\n    yValue = exp(xValue);\n    y = mapBoard(yValue, 0, 8, height, 0);\n    vertex(x, y);\n  }\n\n  endShape();\n  line(0, 0, 0, height);\n  line(0, height - 1, width, height - 1);\n}\n</code></div>"
             ],
             "alt": "ellipse moves along a curve with mouse x. e^n displayed.",
             "class": "p5",
@@ -13232,7 +13232,7 @@ module.exports={
                 "type": "Integer"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n  //map, mouseX between 0 and 5.\n  let ax = map(mouseX, 0, 100, 0, 5);\n  let ay = 66;\n\n  //Get the floor of the mapped number.\n  let bx = floor(map(mouseX, 0, 100, 0, 5));\n  let by = 33;\n\n  // Multiply the mapped numbers by 20 to more easily\n  // see the changes.\n  stroke(0);\n  fill(0);\n  line(0, ay, ax * 20, ay);\n  line(0, by, bx * 20, by);\n\n  // Reformat the float returned by map and draw it.\n  noStroke();\n  text(nfc(ax, 2), ax, ay - 5);\n  text(nfc(bx, 1), bx, by - 5);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n  //mapBoard, mouseX between 0 and 5.\n  let ax = mapBoard(mouseX, 0, 100, 0, 5);\n  let ay = 66;\n\n  //Get the floor of the mapped number.\n  let bx = floor(mapBoard(mouseX, 0, 100, 0, 5));\n  let by = 33;\n\n  // Multiply the mapped numbers by 20 to more easily\n  // see the changes.\n  stroke(0);\n  fill(0);\n  line(0, ay, ax * 20, ay);\n  line(0, by, bx * 20, by);\n\n  // Reformat the float returned by mapBoard and draw it.\n  noStroke();\n  text(nfc(ax, 2), ax, ay - 5);\n  text(nfc(bx, 1), bx, by - 5);\n}\n</code></div>"
             ],
             "alt": "2 horizontal lines & number sets. increase with mouse x. bottom to 2 decimals",
             "class": "p5",
@@ -13292,7 +13292,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n  let maxX = 2.8;\n  let maxY = 1.5;\n\n  // Compute the natural log of a value between 0 and maxX\n  let xValue = map(mouseX, 0, width, 0, maxX);\n  let yValue, y;\n  if (xValue > 0) {\n   // Cannot take the log of a negative number.\n    yValue = log(xValue);\n    y = map(yValue, -maxY, maxY, height, 0);\n\n    // Display the calculation occurring.\n    let legend = 'log(' + nf(xValue, 1, 2) + ')\\n= ' + nf(yValue, 1, 3);\n    stroke(150);\n    line(mouseX, y, mouseX, height);\n    fill(0);\n    text(legend, 5, 15);\n    noStroke();\n    ellipse(mouseX, y, 7, 7);\n  }\n\n  // Draw the log(x) curve,\n  // over the domain of x from 0 to maxX\n  noFill();\n  stroke(0);\n  beginShape();\n  for (let x = 0; x < width; x++) {\n    xValue = map(x, 0, width, 0, maxX);\n    yValue = log(xValue);\n    y = map(yValue, -maxY, maxY, height, 0);\n    vertex(x, y);\n  }\n  endShape();\n  line(0, 0, 0, height);\n  line(0, height / 2, width, height / 2);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n  let maxX = 2.8;\n  let maxY = 1.5;\n\n  // Compute the natural log of a value between 0 and maxX\n  let xValue = mapBoard(mouseX, 0, width, 0, maxX);\n  let yValue, y;\n  if (xValue > 0) {\n   // Cannot take the log of a negative number.\n    yValue = log(xValue);\n    y = mapBoard(yValue, -maxY, maxY, height, 0);\n\n    // Display the calculation occurring.\n    let legend = 'log(' + nf(xValue, 1, 2) + ')\\n= ' + nf(yValue, 1, 3);\n    stroke(150);\n    line(mouseX, y, mouseX, height);\n    fill(0);\n    text(legend, 5, 15);\n    noStroke();\n    ellipse(mouseX, y, 7, 7);\n  }\n\n  // Draw the log(x) curve,\n  // over the domain of x from 0 to maxX\n  noFill();\n  stroke(0);\n  beginShape();\n  for (let x = 0; x < width; x++) {\n    xValue = mapBoard(x, 0, width, 0, maxX);\n    yValue = log(xValue);\n    y = mapBoard(yValue, -maxY, maxY, height, 0);\n    vertex(x, y);\n  }\n  endShape();\n  line(0, 0, 0, height);\n  line(0, height / 2, width, height / 2);\n}\n</code></div>"
             ],
             "alt": "ellipse moves along a curve with mouse x. natural logarithm of n displayed.",
             "class": "p5",
@@ -13334,7 +13334,7 @@ module.exports={
             "line": 422,
             "description": "<p>Re-maps a number from one range to another.\n<br><br>\nIn the first example above, the number 25 is converted from a value in the\nrange of 0 to 100 into a value that ranges from the left edge of the\nwindow (0) to the right edge (width).</p>\n",
             "itemtype": "method",
-            "name": "map",
+            "name": "mapBoard",
             "params": [
                 {
                     "name": "value",
@@ -13373,7 +13373,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n  <div><code>\nlet value = 25;\nlet m = map(value, 0, 100, 0, width);\nellipse(m, 50, 10, 10);\n</code></div>\n\n  <div><code>\nfunction setup() {\n  noStroke();\n}\n\nfunction draw() {\n  background(204);\n  let x1 = map(mouseX, 0, width, 25, 75);\n  ellipse(x1, 25, 25, 25);\n  //This ellipse is constrained to the 0-100 range\n  //after setting withinBounds to true\n  let x2 = map(mouseX, 0, width, 0, 100, true);\n  ellipse(x2, 75, 25, 25);\n}\n</code></div>"
+                "\n  <div><code>\nlet value = 25;\nlet m = mapBoard(value, 0, 100, 0, width);\nellipse(m, 50, 10, 10);\n</code></div>\n\n  <div><code>\nfunction setup() {\n  noStroke();\n}\n\nfunction draw() {\n  background(204);\n  let x1 = mapBoard(mouseX, 0, width, 25, 75);\n  ellipse(x1, 25, 25, 25);\n  //This ellipse is constrained to the 0-100 range\n  //after setting withinBounds to true\n  let x2 = mapBoard(mouseX, 0, width, 0, 100, true);\n  ellipse(x2, 75, 25, 25);\n}\n</code></div>"
             ],
             "alt": "10 by 10 white ellipse with in mid left canvas\n2 25 by 25 white ellipses move with mouse x. Bottom has more range from X",
             "class": "p5",
@@ -13489,7 +13489,7 @@ module.exports={
         {
             "file": "src/math/calculation.js",
             "line": 578,
-            "description": "<p>Normalizes a number from another range into a value between 0 and 1.\nIdentical to map(value, low, high, 0, 1).\nNumbers outside of the range are not clamped to 0 and 1, because\nout-of-range values are often intentional and useful. (See the example above.)</p>\n",
+            "description": "<p>Normalizes a number from another range into a value between 0 and 1.\nIdentical to mapBoard(value, low, high, 0, 1).\nNumbers outside of the range are not clamped to 0 and 1, because\nout-of-range values are often intentional and useful. (See the example above.)</p>\n",
             "itemtype": "method",
             "name": "norm",
             "params": [
@@ -13569,7 +13569,7 @@ module.exports={
                 "type": "Integer"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n  //map, mouseX between 0 and 5.\n  let ax = map(mouseX, 0, 100, 0, 5);\n  let ay = 66;\n\n  // Round the mapped number.\n  let bx = round(map(mouseX, 0, 100, 0, 5));\n  let by = 33;\n\n  // Multiply the mapped numbers by 20 to more easily\n  // see the changes.\n  stroke(0);\n  fill(0);\n  line(0, ay, ax * 20, ay);\n  line(0, by, bx * 20, by);\n\n  // Reformat the float returned by map and draw it.\n  noStroke();\n  text(nfc(ax, 2), ax, ay - 5);\n  text(nfc(bx, 1), bx, by - 5);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n  //mapBoard, mouseX between 0 and 5.\n  let ax = mapBoard(mouseX, 0, 100, 0, 5);\n  let ay = 66;\n\n  // Round the mapped number.\n  let bx = round(mapBoard(mouseX, 0, 100, 0, 5));\n  let by = 33;\n\n  // Multiply the mapped numbers by 20 to more easily\n  // see the changes.\n  stroke(0);\n  fill(0);\n  line(0, ay, ax * 20, ay);\n  line(0, by, bx * 20, by);\n\n  // Reformat the float returned by mapBoard and draw it.\n  noStroke();\n  text(nfc(ax, 2), ax, ay - 5);\n  text(nfc(bx, 1), bx, by - 5);\n}\n</code></div>"
             ],
             "alt": "horizontal center line squared values displayed on top and regular on bottom.",
             "class": "p5",
@@ -13594,7 +13594,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction draw() {\n  background(200);\n  let eSize = 7;\n  let x1 = map(mouseX, 0, width, 0, 10);\n  let y1 = 80;\n  let x2 = sq(x1);\n  let y2 = 20;\n\n  // Draw the non-squared.\n  line(0, y1, width, y1);\n  ellipse(x1, y1, eSize, eSize);\n\n  // Draw the squared.\n  line(0, y2, width, y2);\n  ellipse(x2, y2, eSize, eSize);\n\n  // Draw dividing line.\n  stroke(100);\n  line(0, height / 2, width, height / 2);\n\n  // Draw text.\n  let spacing = 15;\n  noStroke();\n  fill(0);\n  text('x = ' + x1, 0, y1 + spacing);\n  text('sq(x) = ' + x2, 0, y2 + spacing);\n}\n</code></div>"
+                "\n<div><code>\nfunction draw() {\n  background(200);\n  let eSize = 7;\n  let x1 = mapBoard(mouseX, 0, width, 0, 10);\n  let y1 = 80;\n  let x2 = sq(x1);\n  let y2 = 20;\n\n  // Draw the non-squared.\n  line(0, y1, width, y1);\n  ellipse(x1, y1, eSize, eSize);\n\n  // Draw the squared.\n  line(0, y2, width, y2);\n  ellipse(x2, y2, eSize, eSize);\n\n  // Draw dividing line.\n  stroke(100);\n  line(0, height / 2, width, height / 2);\n\n  // Draw text.\n  let spacing = 15;\n  noStroke();\n  fill(0);\n  text('x = ' + x1, 0, y1 + spacing);\n  text('sq(x) = ' + x2, 0, y2 + spacing);\n}\n</code></div>"
             ],
             "alt": "horizontal center line squared values displayed on top and regular on bottom.",
             "class": "p5",
@@ -14056,7 +14056,7 @@ module.exports={
             "name": "mult",
             "chainable": 1,
             "example": [
-                "\n<div class=\"norender\">\n<code>\nlet v = createVector(1, 2, 3);\nv.mult(2);\n// v's components are set to [2, 4, 6]\n</code>\n</div>\n\n<div class=\"norender\">\n<code>\n// Static method\nlet v1 = createVector(1, 2, 3);\nlet v2 = p5.Vector.mult(v1, 2);\n// v2 has components [2, 4, 6]\nprint(v2);\n</code>\n</div>\n\n<div>\n<code>\nfunction draw() {\n  background(240);\n\n  let v0 = createVector(50, 50);\n  let v1 = createVector(25, -25);\n  drawArrow(v0, v1, 'red');\n\n  let num = map(mouseX, 0, width, -2, 2, true);\n  let v2 = p5.Vector.mult(v1, num);\n  drawArrow(v0, v2, 'blue');\n\n  noStroke();\n  text('multiplied by ' + num.toFixed(2), 5, 90);\n}\n\n// draw an arrow for a vector at a given base position\nfunction drawArrow(base, vec, myColor) {\n  push();\n  stroke(myColor);\n  strokeWeight(3);\n  fill(myColor);\n  translate(base.x, base.y);\n  line(0, 0, vec.x, vec.y);\n  rotate(vec.heading());\n  let arrowSize = 7;\n  translate(vec.mag() - arrowSize, 0);\n  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);\n  pop();\n}\n</code>\n</div>"
+                "\n<div class=\"norender\">\n<code>\nlet v = createVector(1, 2, 3);\nv.mult(2);\n// v's components are set to [2, 4, 6]\n</code>\n</div>\n\n<div class=\"norender\">\n<code>\n// Static method\nlet v1 = createVector(1, 2, 3);\nlet v2 = p5.Vector.mult(v1, 2);\n// v2 has components [2, 4, 6]\nprint(v2);\n</code>\n</div>\n\n<div>\n<code>\nfunction draw() {\n  background(240);\n\n  let v0 = createVector(50, 50);\n  let v1 = createVector(25, -25);\n  drawArrow(v0, v1, 'red');\n\n  let num = mapBoard(mouseX, 0, width, -2, 2, true);\n  let v2 = p5.Vector.mult(v1, num);\n  drawArrow(v0, v2, 'blue');\n\n  noStroke();\n  text('multiplied by ' + num.toFixed(2), 5, 90);\n}\n\n// draw an arrow for a vector at a given base position\nfunction drawArrow(base, vec, myColor) {\n  push();\n  stroke(myColor);\n  strokeWeight(3);\n  fill(myColor);\n  translate(base.x, base.y);\n  line(0, 0, vec.x, vec.y);\n  rotate(vec.heading());\n  let arrowSize = 7;\n  translate(vec.mag() - arrowSize, 0);\n  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);\n  pop();\n}\n</code>\n</div>"
             ],
             "class": "p5.Vector",
             "module": "Math",
@@ -14124,7 +14124,7 @@ module.exports={
             "name": "div",
             "chainable": 1,
             "example": [
-                "\n<div class=\"norender\">\n<code>\nlet v = createVector(6, 4, 2);\nv.div(2); //v's components are set to [3, 2, 1]\n</code>\n</div>\n\n<div class=\"norender\">\n<code>\n// Static method\nlet v1 = createVector(6, 4, 2);\nlet v2 = p5.Vector.div(v1, 2);\n// v2 has components [3, 2, 1]\nprint(v2);\n</code>\n</div>\n\n<div>\n<code>\nfunction draw() {\n  background(240);\n\n  let v0 = createVector(0, 100);\n  let v1 = createVector(50, -50);\n  drawArrow(v0, v1, 'red');\n\n  let num = map(mouseX, 0, width, 10, 0.5, true);\n  let v2 = p5.Vector.div(v1, num);\n  drawArrow(v0, v2, 'blue');\n\n  noStroke();\n  text('divided by ' + num.toFixed(2), 10, 90);\n}\n\n// draw an arrow for a vector at a given base position\nfunction drawArrow(base, vec, myColor) {\n  push();\n  stroke(myColor);\n  strokeWeight(3);\n  fill(myColor);\n  translate(base.x, base.y);\n  line(0, 0, vec.x, vec.y);\n  rotate(vec.heading());\n  let arrowSize = 7;\n  translate(vec.mag() - arrowSize, 0);\n  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);\n  pop();\n}\n</code>\n</div>"
+                "\n<div class=\"norender\">\n<code>\nlet v = createVector(6, 4, 2);\nv.div(2); //v's components are set to [3, 2, 1]\n</code>\n</div>\n\n<div class=\"norender\">\n<code>\n// Static method\nlet v1 = createVector(6, 4, 2);\nlet v2 = p5.Vector.div(v1, 2);\n// v2 has components [3, 2, 1]\nprint(v2);\n</code>\n</div>\n\n<div>\n<code>\nfunction draw() {\n  background(240);\n\n  let v0 = createVector(0, 100);\n  let v1 = createVector(50, -50);\n  drawArrow(v0, v1, 'red');\n\n  let num = mapBoard(mouseX, 0, width, 10, 0.5, true);\n  let v2 = p5.Vector.div(v1, num);\n  drawArrow(v0, v2, 'blue');\n\n  noStroke();\n  text('divided by ' + num.toFixed(2), 10, 90);\n}\n\n// draw an arrow for a vector at a given base position\nfunction drawArrow(base, vec, myColor) {\n  push();\n  stroke(myColor);\n  strokeWeight(3);\n  fill(myColor);\n  translate(base.x, base.y);\n  line(0, 0, vec.x, vec.y);\n  rotate(vec.heading());\n  let arrowSize = 7;\n  translate(vec.mag() - arrowSize, 0);\n  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);\n  pop();\n}\n</code>\n</div>"
             ],
             "class": "p5.Vector",
             "module": "Math",
@@ -14481,7 +14481,7 @@ module.exports={
             ],
             "chainable": 1,
             "example": [
-                "\n<div class=\"norender\">\n<code>\nlet v = createVector(10, 20, 2);\n// v has components [10.0, 20.0, 2.0]\nv.setMag(10);\n// v's components are set to [6.0, 8.0, 0.0]\n</code>\n</div>\n\n<div>\n<code>\nfunction draw() {\n  background(240);\n\n  let v0 = createVector(0, 0);\n  let v1 = createVector(50, 50);\n\n  drawArrow(v0, v1, 'red');\n\n  let length = map(mouseX, 0, width, 0, 141, true);\n  v1.setMag(length);\n  drawArrow(v0, v1, 'blue');\n\n  noStroke();\n  text('magnitude set to: ' + length.toFixed(2), 10, 70, 90, 30);\n}\n\n// draw an arrow for a vector at a given base position\nfunction drawArrow(base, vec, myColor) {\n  push();\n  stroke(myColor);\n  strokeWeight(3);\n  fill(myColor);\n  translate(base.x, base.y);\n  line(0, 0, vec.x, vec.y);\n  rotate(vec.heading());\n  let arrowSize = 7;\n  translate(vec.mag() - arrowSize, 0);\n  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);\n  pop();\n}\n</code>\n</div>"
+                "\n<div class=\"norender\">\n<code>\nlet v = createVector(10, 20, 2);\n// v has components [10.0, 20.0, 2.0]\nv.setMag(10);\n// v's components are set to [6.0, 8.0, 0.0]\n</code>\n</div>\n\n<div>\n<code>\nfunction draw() {\n  background(240);\n\n  let v0 = createVector(0, 0);\n  let v1 = createVector(50, 50);\n\n  drawArrow(v0, v1, 'red');\n\n  let length = mapBoard(mouseX, 0, width, 0, 141, true);\n  v1.setMag(length);\n  drawArrow(v0, v1, 'blue');\n\n  noStroke();\n  text('magnitude set to: ' + length.toFixed(2), 10, 70, 90, 30);\n}\n\n// draw an arrow for a vector at a given base position\nfunction drawArrow(base, vec, myColor) {\n  push();\n  stroke(myColor);\n  strokeWeight(3);\n  fill(myColor);\n  translate(base.x, base.y);\n  line(0, 0, vec.x, vec.y);\n  rotate(vec.heading());\n  let arrowSize = 7;\n  translate(vec.mag() - arrowSize, 0);\n  triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);\n  pop();\n}\n</code>\n</div>"
             ],
             "class": "p5.Vector",
             "module": "Math",
@@ -14760,7 +14760,7 @@ module.exports={
                 "type": "p5.Vector"
             },
             "example": [
-                "\n<div>\n<code>\nfunction draw() {\n  background(200);\n\n  // Create a variable, proportional to the mouseX,\n  // varying from 0-360, to represent an angle in degrees.\n  angleMode(DEGREES);\n  let myDegrees = map(mouseX, 0, width, 0, 360);\n\n  // Display that variable in an onscreen text.\n  // (Note the nfc() function to truncate additional decimal places,\n  // and the \"\\xB0\" character for the degree symbol.)\n  let readout = 'angle = ' + nfc(myDegrees, 1) + '\\xB0';\n  noStroke();\n  fill(0);\n  text(readout, 5, 15);\n\n  // Create a p5.Vector using the fromAngle function,\n  // and extract its x and y components.\n  let v = p5.Vector.fromAngle(radians(myDegrees), 30);\n  let vx = v.x;\n  let vy = v.y;\n\n  push();\n  translate(width / 2, height / 2);\n  noFill();\n  stroke(150);\n  line(0, 0, 30, 0);\n  stroke(0);\n  line(0, 0, vx, vy);\n  pop();\n}\n</code>\n</div>"
+                "\n<div>\n<code>\nfunction draw() {\n  background(200);\n\n  // Create a variable, proportional to the mouseX,\n  // varying from 0-360, to represent an angle in degrees.\n  angleMode(DEGREES);\n  let myDegrees = mapBoard(mouseX, 0, width, 0, 360);\n\n  // Display that variable in an onscreen text.\n  // (Note the nfc() function to truncate additional decimal places,\n  // and the \"\\xB0\" character for the degree symbol.)\n  let readout = 'angle = ' + nfc(myDegrees, 1) + '\\xB0';\n  noStroke();\n  fill(0);\n  text(readout, 5, 15);\n\n  // Create a p5.Vector using the fromAngle function,\n  // and extract its x and y components.\n  let v = p5.Vector.fromAngle(radians(myDegrees), 30);\n  let vx = v.x;\n  let vy = v.y;\n\n  push();\n  translate(width / 2, height / 2);\n  noFill();\n  stroke(150);\n  line(0, 0, 30, 0);\n  stroke(0);\n  line(0, 0, vx, vy);\n  pop();\n}\n</code>\n</div>"
             ],
             "class": "p5.Vector",
             "module": "Math",
@@ -21021,7 +21021,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\n\n var ball = {};\n var soundFile;\n\n function preload() {\n   soundFormats('ogg', 'mp3');\n   soundFile = loadSound('assets/beatbox.mp3');\n }\n\n function draw() {\n   background(0);\n   ball.x = constrain(mouseX, 0, width);\n   ellipse(ball.x, height/2, 20, 20)\n }\n\n function mousePressed(){\n   // map the ball's x location to a panning degree\n   // between -1.0 (left) and 1.0 (right)\n   var panning = map(ball.x, 0., width,-1.0, 1.0);\n   soundFile.pan(panning);\n   soundFile.play();\n }\n </div></code>"
+                "\n<div><code>\n\n var ball = {};\n var soundFile;\n\n function preload() {\n   soundFormats('ogg', 'mp3');\n   soundFile = loadSound('assets/beatbox.mp3');\n }\n\n function draw() {\n   background(0);\n   ball.x = constrain(mouseX, 0, width);\n   ellipse(ball.x, height/2, 20, 20)\n }\n\n function mousePressed(){\n   // mapBoard the ball's x location to a panning degree\n   // between -1.0 (left) and 1.0 (right)\n   var panning = mapBoard(ball.x, 0., width,-1.0, 1.0);\n   soundFile.pan(panning);\n   soundFile.play();\n }\n </div></code>"
             ],
             "class": "p5.SoundFile",
             "module": "p5.sound",
@@ -21056,7 +21056,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nvar song;\n\nfunction preload() {\n  song = loadSound('assets/Damscray_DancingTiger.mp3');\n}\n\nfunction setup() {\n  song.loop();\n}\n\nfunction draw() {\n  background(200);\n\n  // Set the rate to a range between 0.1 and 4\n  // Changing the rate also alters the pitch\n  var speed = map(mouseY, 0.1, height, 0, 2);\n  speed = constrain(speed, 0.01, 4);\n  song.rate(speed);\n\n  // Draw a circle to show what is going on\n  stroke(0);\n  fill(51, 100);\n  ellipse(mouseX, 100, 48, 48);\n}\n\n </code>\n </div>\n"
+                "\n<div><code>\nvar song;\n\nfunction preload() {\n  song = loadSound('assets/Damscray_DancingTiger.mp3');\n}\n\nfunction setup() {\n  song.loop();\n}\n\nfunction draw() {\n  background(200);\n\n  // Set the rate to a range between 0.1 and 4\n  // Changing the rate also alters the pitch\n  var speed = mapBoard(mouseY, 0.1, height, 0, 2);\n  speed = constrain(speed, 0.01, 4);\n  song.rate(speed);\n\n  // Draw a circle to show what is going on\n  stroke(0);\n  fill(51, 100);\n  ellipse(mouseX, 100, 48, 48);\n}\n\n </code>\n </div>\n"
             ],
             "class": "p5.SoundFile",
             "module": "p5.sound",
@@ -21447,7 +21447,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nfunction preload(){\n  sound1 = loadSound('assets/beat.mp3');\n  sound2 = loadSound('assets/drum.mp3');\n}\nfunction setup(){\n  amplitude = new p5.Amplitude();\n  sound1.play();\n  sound2.play();\n  amplitude.setInput(sound2);\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\nfunction mouseClicked(){\n  sound1.stop();\n  sound2.stop();\n}\n</code></div>"
+                "\n<div><code>\nfunction preload(){\n  sound1 = loadSound('assets/beat.mp3');\n  sound2 = loadSound('assets/drum.mp3');\n}\nfunction setup(){\n  amplitude = new p5.Amplitude();\n  sound1.play();\n  sound2.play();\n  amplitude.setInput(sound2);\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = mapBoard(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\nfunction mouseClicked(){\n  sound1.stop();\n  sound2.stop();\n}\n</code></div>"
             ],
             "class": "p5.Amplitude",
             "module": "p5.sound",
@@ -21472,7 +21472,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  amplitude = new p5.Amplitude();\n  sound.play();\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = map(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\nfunction mouseClicked(){\n  sound.stop();\n}\n</code></div>"
+                "\n<div><code>\nfunction preload(){\n  sound = loadSound('assets/beat.mp3');\n}\nfunction setup() {\n  amplitude = new p5.Amplitude();\n  sound.play();\n}\nfunction draw() {\n  background(0);\n  fill(255);\n  var level = amplitude.getLevel();\n  var size = mapBoard(level, 0, 1, 0, 200);\n  ellipse(width/2, height/2, size, size);\n}\nfunction mouseClicked(){\n  sound.stop();\n}\n</code></div>"
             ],
             "class": "p5.Amplitude",
             "module": "p5.sound",
@@ -21481,7 +21481,7 @@ module.exports={
         {
             "file": "lib/addons/p5.sound.js",
             "line": 3405,
-            "description": "<p>Determines whether the results of Amplitude.process() will be\nNormalized. To normalize, Amplitude finds the difference the\nloudest reading it has processed and the maximum amplitude of\n1.0. Amplitude adds this difference to all values to produce\nresults that will reliably map between 0.0 and 1.0. However,\nif a louder moment occurs, the amount that Normalize adds to\nall the values will change. Accepts an optional boolean parameter\n(true or false). Normalizing is off by default.</p>\n",
+            "description": "<p>Determines whether the results of Amplitude.process() will be\nNormalized. To normalize, Amplitude finds the difference the\nloudest reading it has processed and the maximum amplitude of\n1.0. Amplitude adds this difference to all values to produce\nresults that will reliably mapBoard between 0.0 and 1.0. However,\nif a louder moment occurs, the amount that Normalize adds to\nall the values will change. Accepts an optional boolean parameter\n(true or false). Normalizing is off by default.</p>\n",
             "itemtype": "method",
             "name": "toggleNormalize",
             "params": [
@@ -21584,7 +21584,7 @@ module.exports={
                 "type": "Array"
             },
             "example": [
-                "\n<div><code>\nvar osc;\nvar fft;\n\nfunction setup(){\n  createCanvas(100,100);\n  osc = new p5.Oscillator();\n  osc.amp(0);\n  osc.start();\n  fft = new p5.FFT();\n}\n\nfunction draw(){\n  background(0);\n\n  var freq = map(mouseX, 0, 800, 20, 15000);\n  freq = constrain(freq, 1, 20000);\n  osc.freq(freq);\n\n  var spectrum = fft.analyze();\n  noStroke();\n  fill(0,255,0); // spectrum is green\n  for (var i = 0; i< spectrum.length; i++){\n    var x = map(i, 0, spectrum.length, 0, width);\n    var h = -height + map(spectrum[i], 0, 255, height, 0);\n    rect(x, height, width / spectrum.length, h );\n  }\n\n  stroke(255);\n  text('Freq: ' + round(freq)+'Hz', 10, 10);\n\n  isMouseOverCanvas();\n}\n\n// only play sound when mouse is over canvas\nfunction isMouseOverCanvas() {\n  var mX = mouseX, mY = mouseY;\n  if (mX > 0 && mX < width && mY < height && mY > 0) {\n    osc.amp(0.5, 0.2);\n  } else {\n    osc.amp(0, 0.2);\n  }\n}\n</code></div>\n\n"
+                "\n<div><code>\nvar osc;\nvar fft;\n\nfunction setup(){\n  createCanvas(100,100);\n  osc = new p5.Oscillator();\n  osc.amp(0);\n  osc.start();\n  fft = new p5.FFT();\n}\n\nfunction draw(){\n  background(0);\n\n  var freq = mapBoard(mouseX, 0, 800, 20, 15000);\n  freq = constrain(freq, 1, 20000);\n  osc.freq(freq);\n\n  var spectrum = fft.analyze();\n  noStroke();\n  fill(0,255,0); // spectrum is green\n  for (var i = 0; i< spectrum.length; i++){\n    var x = mapBoard(i, 0, spectrum.length, 0, width);\n    var h = -height + mapBoard(spectrum[i], 0, 255, height, 0);\n    rect(x, height, width / spectrum.length, h );\n  }\n\n  stroke(255);\n  text('Freq: ' + round(freq)+'Hz', 10, 10);\n\n  isMouseOverCanvas();\n}\n\n// only play sound when mouse is over canvas\nfunction isMouseOverCanvas() {\n  var mX = mouseX, mY = mouseY;\n  if (mX > 0 && mX < width && mY < height && mY > 0) {\n    osc.amp(0.5, 0.2);\n  } else {\n    osc.amp(0, 0.2);\n  }\n}\n</code></div>\n\n"
             ],
             "class": "p5.FFT",
             "module": "p5.sound",
@@ -21628,7 +21628,7 @@ module.exports={
                 "type": "Number"
             },
             "example": [
-                "\n<div><code>\n\n\nfunction setup(){\ncnv = createCanvas(100,100);\nsound = new p5.AudioIn();\nsound.start();\nfft = new p5.FFT();\nsound.connect(fft);\n}\n\n\nfunction draw(){\n\nvar centroidplot = 0.0;\nvar spectralCentroid = 0;\n\n\nbackground(0);\nstroke(0,255,0);\nvar spectrum = fft.analyze();\nfill(0,255,0); // spectrum is green\n\n//draw the spectrum\nfor (var i = 0; i< spectrum.length; i++){\n  var x = map(log(i), 0, log(spectrum.length), 0, width);\n  var h = map(spectrum[i], 0, 255, 0, height);\n  var rectangle_width = (log(i+1)-log(i))*(width/log(spectrum.length));\n  rect(x, height, rectangle_width, -h )\n}\n\nvar nyquist = 22050;\n\n// get the centroid\nspectralCentroid = fft.getCentroid();\n\n// the mean_freq_index calculation is for the display.\nvar mean_freq_index = spectralCentroid/(nyquist/spectrum.length);\n\ncentroidplot = map(log(mean_freq_index), 0, log(spectrum.length), 0, width);\n\n\nstroke(255,0,0); // the line showing where the centroid is will be red\n\nrect(centroidplot, 0, width / spectrum.length, height)\nnoStroke();\nfill(255,255,255);  // text is white\ntext(\"centroid: \", 10, 20);\ntext(round(spectralCentroid)+\" Hz\", 10, 40);\n}\n </code></div>"
+                "\n<div><code>\n\n\nfunction setup(){\ncnv = createCanvas(100,100);\nsound = new p5.AudioIn();\nsound.start();\nfft = new p5.FFT();\nsound.connect(fft);\n}\n\n\nfunction draw(){\n\nvar centroidplot = 0.0;\nvar spectralCentroid = 0;\n\n\nbackground(0);\nstroke(0,255,0);\nvar spectrum = fft.analyze();\nfill(0,255,0); // spectrum is green\n\n//draw the spectrum\nfor (var i = 0; i< spectrum.length; i++){\n  var x = mapBoard(log(i), 0, log(spectrum.length), 0, width);\n  var h = mapBoard(spectrum[i], 0, 255, 0, height);\n  var rectangle_width = (log(i+1)-log(i))*(width/log(spectrum.length));\n  rect(x, height, rectangle_width, -h )\n}\n\nvar nyquist = 22050;\n\n// get the centroid\nspectralCentroid = fft.getCentroid();\n\n// the mean_freq_index calculation is for the display.\nvar mean_freq_index = spectralCentroid/(nyquist/spectrum.length);\n\ncentroidplot = mapBoard(log(mean_freq_index), 0, log(spectrum.length), 0, width);\n\n\nstroke(255,0,0); // the line showing where the centroid is will be red\n\nrect(centroidplot, 0, width / spectrum.length, height)\nnoStroke();\nfill(255,255,255);  // text is white\ntext(\"centroid: \", 10, 20);\ntext(round(spectralCentroid)+\" Hz\", 10, 40);\n}\n </code></div>"
             ],
             "class": "p5.FFT",
             "module": "p5.sound",
@@ -22534,7 +22534,7 @@ module.exports={
                 }
             ],
             "example": [
-                "\n<div><code>\nvar env, osc, amp, cnv;\n\nvar attackTime = 0.001;\nvar decayTime = 0.2;\nvar attackLevel = 1;\nvar decayLevel = 0;\n\nfunction setup() {\n  cnv = createCanvas(100, 100);\n  fill(0,255,0);\n  noStroke();\n\n  env = new p5.Envelope();\n  env.setADSR(attackTime, decayTime);\n\n  osc = new p5.Oscillator();\n  osc.amp(env);\n  osc.start();\n\n  amp = new p5.Amplitude();\n\n  cnv.mousePressed(triggerRamp);\n}\n\nfunction triggerRamp() {\n  env.ramp(osc, 0, attackLevel, decayLevel);\n}\n\nfunction draw() {\n  background(20,20,20);\n  text('click me', 10, 20);\n  var h = map(amp.getLevel(), 0, 0.4, 0, height);;\n\n  rect(0, height, width, -h);\n}\n</code></div>"
+                "\n<div><code>\nvar env, osc, amp, cnv;\n\nvar attackTime = 0.001;\nvar decayTime = 0.2;\nvar attackLevel = 1;\nvar decayLevel = 0;\n\nfunction setup() {\n  cnv = createCanvas(100, 100);\n  fill(0,255,0);\n  noStroke();\n\n  env = new p5.Envelope();\n  env.setADSR(attackTime, decayTime);\n\n  osc = new p5.Oscillator();\n  osc.amp(env);\n  osc.start();\n\n  amp = new p5.Amplitude();\n\n  cnv.mousePressed(triggerRamp);\n}\n\nfunction triggerRamp() {\n  env.ramp(osc, 0, attackLevel, decayLevel);\n}\n\nfunction draw() {\n  background(20,20,20);\n  text('click me', 10, 20);\n  var h = mapBoard(amp.getLevel(), 0, 0.4, 0, height);;\n\n  rect(0, height, width, -h);\n}\n</code></div>"
             ],
             "class": "p5.Envelope",
             "module": "p5.sound",
@@ -30818,9 +30818,9 @@ var Promise$1 = function () {
   /**
     `finally` will be invoked regardless of the promise's fate just as native
     try/catch/finally behaves
-  
+
     Synchronous example:
-  
+
     ```js
     findAuthor() {
       if (Math.random() > 0.5) {
@@ -30828,7 +30828,7 @@ var Promise$1 = function () {
       }
       return new Author();
     }
-  
+
     try {
       return findAuthor(); // succeed or fail
     } catch(error) {
@@ -30838,9 +30838,9 @@ var Promise$1 = function () {
       // doesn't affect the return value
     }
     ```
-  
+
     Asynchronous example:
-  
+
     ```js
     findAuthor().catch(function(reason){
       return findOtherAuther();
@@ -30848,7 +30848,7 @@ var Promise$1 = function () {
       // author was either found, or not
     });
     ```
-  
+
     @method finally
     @param {Function} callback
     @return {Promise}
@@ -31472,10 +31472,10 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	  this.sourceIndex = 0;
 	  this.tag = 0;
 	  this.bitcount = 0;
-	  
+
 	  this.dest = dest;
 	  this.destLen = 0;
-	  
+
 	  this.ltree = new Tree();  /* dynamic length/symbol tree */
 	  this.dtree = new Tree();  /* dynamic distance tree */
 	}
@@ -31617,7 +31617,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	    d.tag |= d.source[d.sourceIndex++] << d.bitcount;
 	    d.bitcount += 8;
 	  }
-	  
+
 	  var sum = 0, cur = 0, len = 0;
 	  var tag = d.tag;
 
@@ -31630,7 +31630,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	    sum += t.table[len];
 	    cur -= t.table[len];
 	  } while (cur >= 0);
-	  
+
 	  d.tag = tag;
 	  d.bitcount -= len;
 
@@ -31741,7 +31741,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	function tinf_inflate_uncompressed_block(d) {
 	  var length, invlength;
 	  var i;
-	  
+
 	  /* unread from bitbuffer */
 	  while (d.bitcount > 8) {
 	    d.sourceIndex--;
@@ -31814,7 +31814,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	    else
 	      { return d.dest.subarray(0, d.destLen); }
 	  }
-	  
+
 	  return d.dest;
 	}
 
@@ -38568,7 +38568,7 @@ X.prototype.gluTessProperty=X.prototype.B;X.prototype.gluGetTessProperty=X.proto
 	    getScriptNames: function() {
 	        var layout = this.getTable();
 	        if (!layout) { return []; }
-	        return layout.scripts.map(function(script) {
+	        return layout.scripts.mapBoard(function(script) {
 	            return script.tag;
 	        });
 	    },
@@ -44168,7 +44168,7 @@ process.umask = function() { return 0; };
   }
 
   Headers.prototype['delete'] = function(name) {
-    delete this.map[normalizeName(name)]
+    delete this.mapBoard[normalizeName(name)]
   }
 
   Headers.prototype.get = function(name) {
@@ -54676,7 +54676,7 @@ p5.prototype.curveDetail = function(d) {
  *
  * function draw() {
  *   background(204);
- *   let t = map(mouseX, 0, width, -5, 5);
+ *   let t = mapBoard(mouseX, 0, width, -5, 5);
  *   curveTightness(t);
  *   beginShape();
  *   curveVertex(10, 26);
@@ -56282,7 +56282,7 @@ var p5 = _dereq_('./main');
  *
  * function draw() {
  *   var step = frameCount % 20;
- *   var angle = map(step, 0, 20, 0, TWO_PI);
+ *   var angle = mapBoard(step, 0, 20, 0, TWO_PI);
  *   var cos_a = cos(angle);
  *   var sin_a = sin(angle);
  *   background(200);
@@ -56302,7 +56302,7 @@ var p5 = _dereq_('./main');
  *
  * function draw() {
  *   var step = frameCount % 20;
- *   var angle = map(step, 0, 20, -PI / 4, PI / 4);
+ *   var angle = mapBoard(step, 0, 20, -PI / 4, PI / 4);
  *   background(200);
  *   translate(50, 50);
  *   // equivalent to shearX(angle);
@@ -67301,12 +67301,12 @@ p5.prototype.abs = Math.abs;
  * <div><code>
  * function draw() {
  *   background(200);
- *   // map, mouseX between 0 and 5.
- *   let ax = map(mouseX, 0, 100, 0, 5);
+ *   // mapBoard, mouseX between 0 and 5.
+ *   let ax = mapBoard(mouseX, 0, 100, 0, 5);
  *   let ay = 66;
  *
  *   //Get the ceiling of the mapped number.
- *   let bx = ceil(map(mouseX, 0, 100, 0, 5));
+ *   let bx = ceil(mapBoard(mouseX, 0, 100, 0, 5));
  *   let by = 33;
  *
  *   // Multiply the mapped numbers by 20 to more easily
@@ -67316,7 +67316,7 @@ p5.prototype.abs = Math.abs;
  *   line(0, ay, ax * 20, ay);
  *   line(0, by, bx * 20, by);
  *
- *   // Reformat the float returned by map and draw it.
+ *   // Reformat the float returned by mapBoard and draw it.
  *   noStroke();
  *   text(nfc(ax, 2), ax, ay - 5);
  *   text(nfc(bx, 1), bx, by - 5);
@@ -67456,10 +67456,10 @@ p5.prototype.dist = function() {
  *   background(200);
  *
  *   // Compute the exp() function with a value between 0 and 2
- *   let xValue = map(mouseX, 0, width, 0, 2);
+ *   let xValue = mapBoard(mouseX, 0, width, 0, 2);
  *   let yValue = exp(xValue);
  *
- *   let y = map(yValue, 0, 8, height, 0);
+ *   let y = mapBoard(yValue, 0, 8, height, 0);
  *
  *   let legend = 'exp (' + nfc(xValue, 3) + ')\n= ' + nf(yValue, 1, 4);
  *   stroke(150);
@@ -67475,9 +67475,9 @@ p5.prototype.dist = function() {
  *   stroke(0);
  *   beginShape();
  *   for (let x = 0; x < width; x++) {
- *     xValue = map(x, 0, width, 0, 2);
+ *     xValue = mapBoard(x, 0, width, 0, 2);
  *     yValue = exp(xValue);
- *     y = map(yValue, 0, 8, height, 0);
+ *     y = mapBoard(yValue, 0, 8, height, 0);
  *     vertex(x, y);
  *   }
  *
@@ -67504,12 +67504,12 @@ p5.prototype.exp = Math.exp;
  * <div><code>
  * function draw() {
  *   background(200);
- *   //map, mouseX between 0 and 5.
- *   let ax = map(mouseX, 0, 100, 0, 5);
+ *   //mapBoard, mouseX between 0 and 5.
+ *   let ax = mapBoard(mouseX, 0, 100, 0, 5);
  *   let ay = 66;
  *
  *   //Get the floor of the mapped number.
- *   let bx = floor(map(mouseX, 0, 100, 0, 5));
+ *   let bx = floor(mapBoard(mouseX, 0, 100, 0, 5));
  *   let by = 33;
  *
  *   // Multiply the mapped numbers by 20 to more easily
@@ -67519,7 +67519,7 @@ p5.prototype.exp = Math.exp;
  *   line(0, ay, ax * 20, ay);
  *   line(0, by, bx * 20, by);
  *
- *   // Reformat the float returned by map and draw it.
+ *   // Reformat the float returned by mapBoard and draw it.
  *   noStroke();
  *   text(nfc(ax, 2), ax, ay - 5);
  *   text(nfc(bx, 1), bx, by - 5);
@@ -67596,12 +67596,12 @@ p5.prototype.lerp = function(start, stop, amt) {
  *   let maxY = 1.5;
  *
  *   // Compute the natural log of a value between 0 and maxX
- *   let xValue = map(mouseX, 0, width, 0, maxX);
+ *   let xValue = mapBoard(mouseX, 0, width, 0, maxX);
  *   let yValue, y;
  *   if (xValue > 0) {
     // Cannot take the log of a negative number.
  *     yValue = log(xValue);
- *     y = map(yValue, -maxY, maxY, height, 0);
+ *     y = mapBoard(yValue, -maxY, maxY, height, 0);
  *
  *     // Display the calculation occurring.
  *     let legend = 'log(' + nf(xValue, 1, 2) + ')\n= ' + nf(yValue, 1, 3);
@@ -67619,9 +67619,9 @@ p5.prototype.lerp = function(start, stop, amt) {
  *   stroke(0);
  *   beginShape();
  *   for (let x = 0; x < width; x++) {
- *     xValue = map(x, 0, width, 0, maxX);
+ *     xValue = mapBoard(x, 0, width, 0, maxX);
  *     yValue = log(xValue);
- *     y = map(yValue, -maxY, maxY, height, 0);
+ *     y = mapBoard(yValue, -maxY, maxY, height, 0);
  *     vertex(x, y);
  *   }
  *   endShape();
@@ -67682,7 +67682,7 @@ p5.prototype.mag = function(x, y) {
  * range of 0 to 100 into a value that ranges from the left edge of the
  * window (0) to the right edge (width).
  *
- * @method map
+ * @method mapBoard
  * @param  {Number} value  the incoming value to be converted
  * @param  {Number} start1 lower bound of the value's current range
  * @param  {Number} stop1  upper bound of the value's current range
@@ -67693,7 +67693,7 @@ p5.prototype.mag = function(x, y) {
  * @example
  *   <div><code>
  * let value = 25;
- * let m = map(value, 0, 100, 0, width);
+ * let m = mapBoard(value, 0, 100, 0, width);
  * ellipse(m, 50, 10, 10);
 </code></div>
  *
@@ -67704,11 +67704,11 @@ p5.prototype.mag = function(x, y) {
  *
  * function draw() {
  *   background(204);
- *   let x1 = map(mouseX, 0, width, 25, 75);
+ *   let x1 = mapBoard(mouseX, 0, width, 25, 75);
  *   ellipse(x1, 25, 25, 25);
  *   //This ellipse is constrained to the 0-100 range
  *   //after setting withinBounds to true
- *   let x2 = map(mouseX, 0, width, 0, 100, true);
+ *   let x2 = mapBoard(mouseX, 0, width, 0, 100, true);
  *   ellipse(x2, 75, 25, 25);
  * }
 </code></div>
@@ -67719,7 +67719,7 @@ p5.prototype.mag = function(x, y) {
  *
  */
 p5.prototype.map = function(n, start1, stop1, start2, stop2, withinBounds) {
-  p5._validateParameters('map', arguments);
+  p5._validateParameters('mapBoard', arguments);
   var newval = (n - start1) / (stop1 - start1) * (stop2 - start2) + start2;
   if (!withinBounds) {
     return newval;
@@ -67833,7 +67833,7 @@ p5.prototype.min = function() {
 
 /**
  * Normalizes a number from another range into a value between 0 and 1.
- * Identical to map(value, low, high, 0, 1).
+ * Identical to mapBoard(value, low, high, 0, 1).
  * Numbers outside of the range are not clamped to 0 and 1, because
  * out-of-range values are often intentional and useful. (See the example above.)
  *
@@ -67929,12 +67929,12 @@ p5.prototype.pow = Math.pow;
  * <div><code>
  * function draw() {
  *   background(200);
- *   //map, mouseX between 0 and 5.
- *   let ax = map(mouseX, 0, 100, 0, 5);
+ *   //mapBoard, mouseX between 0 and 5.
+ *   let ax = mapBoard(mouseX, 0, 100, 0, 5);
  *   let ay = 66;
  *
  *   // Round the mapped number.
- *   let bx = round(map(mouseX, 0, 100, 0, 5));
+ *   let bx = round(mapBoard(mouseX, 0, 100, 0, 5));
  *   let by = 33;
  *
  *   // Multiply the mapped numbers by 20 to more easily
@@ -67944,7 +67944,7 @@ p5.prototype.pow = Math.pow;
  *   line(0, ay, ax * 20, ay);
  *   line(0, by, bx * 20, by);
  *
- *   // Reformat the float returned by map and draw it.
+ *   // Reformat the float returned by mapBoard and draw it.
  *   noStroke();
  *   text(nfc(ax, 2), ax, ay - 5);
  *   text(nfc(bx, 1), bx, by - 5);
@@ -67970,7 +67970,7 @@ p5.prototype.round = Math.round;
  * function draw() {
  *   background(200);
  *   let eSize = 7;
- *   let x1 = map(mouseX, 0, width, 0, 10);
+ *   let x1 = mapBoard(mouseX, 0, width, 0, 10);
  *   let y1 = 80;
  *   let x2 = sq(x1);
  *   let y2 = 20;
@@ -68925,7 +68925,7 @@ p5.Vector.prototype.sub = function sub(x, y, z) {
  *   let v1 = createVector(25, -25);
  *   drawArrow(v0, v1, 'red');
  *
- *   let num = map(mouseX, 0, width, -2, 2, true);
+ *   let num = mapBoard(mouseX, 0, width, -2, 2, true);
  *   let v2 = p5.Vector.mult(v1, num);
  *   drawArrow(v0, v2, 'blue');
  *
@@ -68999,7 +68999,7 @@ p5.Vector.prototype.mult = function mult(n) {
  *   let v1 = createVector(50, -50);
  *   drawArrow(v0, v1, 'red');
  *
- *   let num = map(mouseX, 0, width, 10, 0.5, true);
+ *   let num = mapBoard(mouseX, 0, width, 10, 0.5, true);
  *   let v2 = p5.Vector.div(v1, num);
  *   drawArrow(v0, v2, 'blue');
  *
@@ -69440,7 +69440,7 @@ p5.Vector.prototype.limit = function limit(max) {
  *
  *   drawArrow(v0, v1, 'red');
  *
- *   let length = map(mouseX, 0, width, 0, 141, true);
+ *   let length = mapBoard(mouseX, 0, width, 0, 141, true);
  *   v1.setMag(length);
  *   drawArrow(v0, v1, 'blue');
  *
@@ -69860,7 +69860,7 @@ p5.Vector.prototype.equals = function equals(x, y, z) {
  *   // Create a variable, proportional to the mouseX,
  *   // varying from 0-360, to represent an angle in degrees.
  *   angleMode(DEGREES);
- *   let myDegrees = map(mouseX, 0, width, 0, 360);
+ *   let myDegrees = mapBoard(mouseX, 0, width, 0, 360);
  *
  *   // Display that variable in an onscreen text.
  *   // (Note the nfc() function to truncate additional decimal places,
@@ -76766,7 +76766,7 @@ function parseObj(model, lines) {
   // UV coordinate 4 and vertex normal 3". In WebGL, every vertex with different
   // parameters must be a different vertex, so loadedVerts is used to
   // temporarily store the parsed vertices, normals, etc., and indexedVerts is
-  // used to map a specific combination (keyed on, for example, the string
+  // used to mapBoard a specific combination (keyed on, for example, the string
   // "3/4/3"), to the actual index of the newly created vertex in the final
   // object.
   var loadedVerts = {

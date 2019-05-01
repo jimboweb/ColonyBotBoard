@@ -1,10 +1,10 @@
 class ColonyBot{
     constructor(map,location={x:300,y:150}){
-        this.map=map;
+        this.mapBoard=map;
         this.location=location;
         this.currentSiteNumber = 0;
         const sprite = createSprite(location.x,location.y);
-        sprite.setAnimation("shipImage",shipImage);
+        sprite.addAnimation("shipImage",shipImage);
         sprite.scale=0.2;
         this.sprite = sprite;
         this.nextSiteNumber=1;
@@ -16,7 +16,7 @@ class ColonyBot{
     addCommand=(fn)=>this.commandQueue.addCommand(fn);
 
     rotateToNext=()=>{
-        this.sprite.rotation=map.getAngleByIndex(this.currentSiteNumber, this.nextSiteNumber);
+        this.sprite.rotation=this.mapBoard.getAngleByIndex(this.currentSiteNumber, this.nextSiteNumber);
     };
 
     isAtNextSite=()=>{
@@ -28,7 +28,7 @@ class ColonyBot{
 
     draw=()=>{
         if(!this.moving){
-            const currentSite = map.sites[this.currentSiteNumber];
+            const currentSite = this.mapBoard.sites[this.currentSiteNumber];
             this.location = currentSite.location;
             this.sprite.location = this.location;
             this.rotateToNext();
@@ -55,12 +55,12 @@ class ColonyBot{
     };
 
     moveForward=()=>{
-        sprite.setSpeed(this.speed,this.sprite.rotation);
+        this.sprite.setSpeed(this.speed,this.sprite.rotation);
         this.moving = true;
         this.nextCommand();
     };
     moveBackward=()=>{
-        sprite.setSpeed(-this.speed,this.sprite.rotation);
+        this.sprite.setSpeed(-this.speed,this.sprite.rotation);
         this.moving = true;
         this.nextCommand();
     };

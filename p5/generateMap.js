@@ -71,7 +71,7 @@ class Map{
         this.roads=roads;
         this.sitesToRoads = getSitesToRoads(sites,roads);
     }
-    getConnectingRoad=(site,idx)=>this.roads(this.sitesToRoads[site][idx]);
+    getConnectingRoad=(site,idx)=>this.roads[this.sitesToRoads[site][idx]];
     getAngleByIndex=(site,idx)=>{
         const road = this.getConnectingRoad(site,idx);
         const angleIndex= road.sites.indexOf(site);

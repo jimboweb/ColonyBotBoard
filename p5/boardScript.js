@@ -7,19 +7,19 @@ function preload(){
 }
 
 function setup(){
-    const boardMap = getPregeneratedMap();
-    drawMap(boardMap);
+    const mapBoard = getPregeneratedMap();
+    drawMap(mapBoard);
     background(0,0,0);
     let canvas = createCanvas(600,300);
     canvas.parent('board');
-    colonyBot = new ColonyBot(boardMap);
-    colonyBot.addCommand(colonyBot.moveForward());
-    colonyBot.addCommand((colonyBot.turnLeft()));
-    colonyBot.addCommand(colonyBot.moveForward());
-    colonyBot.addCommand(colonyBot.moveForward());
-    colonyBot.addCommand(colonyBot.turnRight());
-    colonyBot.addCommand(colonyBot.turnRight());
-    colonyBot.addCommand(colonyBot.moveForward());
+    colonyBot = new ColonyBot(mapBoard);
+    colonyBot.addCommand(colonyBot.moveForward);
+    colonyBot.addCommand((colonyBot.turnLeft));
+    colonyBot.addCommand(colonyBot.moveForward);
+    colonyBot.addCommand(colonyBot.moveForward);
+    colonyBot.addCommand(colonyBot.turnRight);
+    colonyBot.addCommand(colonyBot.turnRight);
+    colonyBot.addCommand(colonyBot.moveForward);
     noLoop();
 }
 
@@ -29,7 +29,7 @@ function draw(){
 }
 
 
-function drawMap(map){
+function drawMap(mapBoard){
     const drawSite=(location)=>{
         fill(255,255,0);
         ellipse(location.x,location.y,20,20);
@@ -43,10 +43,10 @@ function drawMap(map){
             ellipse(location.x,location.y,20,20);
         };
     };
-    map.sites.forEach(site=>{drawSite(site.location)});
-    map.roads.forEach(road=>{
-        const fromSite = map.sites[road.sites[0]];
-        const toSite= map.sites[road.sites[1]];
+    mapBoard.sites.forEach(site=>{drawSite(site.location)});
+    mapBoard.roads.forEach(road=>{
+        const fromSite = mapBoard.sites[road.sites[0]];
+        const toSite= mapBoard.sites[road.sites[1]];
         drawRoad(fromSite.location, toSite.location);
     })
 }
