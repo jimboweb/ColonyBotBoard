@@ -30,6 +30,10 @@ function draw(){
 
 
 function drawMap(map){
+    const drawSite=(location)=>{
+        fill(255,255,0);
+        ellipse(location.x,location.y,20,20);
+    };
     const drawRoad = (fromLoc, toLoc)=>{
         stroke(255,0,0);
         strokeWeight(4);
