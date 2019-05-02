@@ -65,7 +65,7 @@ class ColonyBot{
         this.nextCommand();
     };
     nextCommand = () =>{
-        if(this.commandQueue.length>0){
+        if(!this.commandQueue.isEmpty()){
             this.commandQueue.nextCommand();
         }
     };

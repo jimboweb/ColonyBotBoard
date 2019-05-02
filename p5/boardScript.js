@@ -20,7 +20,8 @@ function setup(){
     colonyBot.addCommand(colonyBot.turnRight);
     colonyBot.addCommand(colonyBot.turnRight);
     colonyBot.addCommand(colonyBot.moveForward);
-    noLoop();
+    colonyBot.nextCommand();
+    //noLoop();
 }
 
 function draw(){

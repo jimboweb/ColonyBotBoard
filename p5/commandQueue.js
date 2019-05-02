@@ -14,6 +14,10 @@ class CommandQueue{
         this.sequence.pop()();
     }
 
+    size=()=>this.sequence.length;
+
+    isEmpty=()=>this.size()===0;
+
     // execFunctions = ()=>{
     //     Window.setInterval(
     //         ()=>{
