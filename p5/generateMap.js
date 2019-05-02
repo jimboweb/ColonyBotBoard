@@ -54,14 +54,10 @@ class Road{
 class Map{
     constructor(sites, roads){
         const getSitesToRoads=(sites, roads)=>{
-            let rtrn = new Array(sites.length);
-            rtrn.fill([]);
-            roads.forEach(
-                (road,idx)=>{
-                    road.sites.forEach(
-                        site=>rtrn[site].concat(idx)
-                    )
-                }
+            const rtrn = sites.map(
+                site=>roads.filter(
+                    road=>road.sites.indexOf(site.index)!==-1
+                )
             )
             return rtrn;
         };
@@ -71,7 +67,7 @@ class Map{
         this.roads=roads;
         this.sitesToRoads = getSitesToRoads(sites,roads);
     }
-    getConnectingRoad=(site,idx)=>this.roads[this.sitesToRoads[site][idx]];
+    getConnectingRoad=(site,idx)=>this.sitesToRoads[site][idx];
     getAngleByIndex=(site,idx)=>{
         const road = this.getConnectingRoad(site,idx);
         const angleIndex= road.sites.indexOf(site);

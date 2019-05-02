@@ -7,10 +7,10 @@ function preload(){
 }
 
 function setup(){
+    let canvas = createCanvas(600,300);
+    background(255,255,255);
     const mapBoard = getPregeneratedMap();
     drawMap(mapBoard);
-    background(0,0,0);
-    let canvas = createCanvas(600,300);
     canvas.parent('board');
     colonyBot = new ColonyBot(mapBoard);
     colonyBot.addCommand(colonyBot.moveForward);
