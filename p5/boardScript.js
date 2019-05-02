@@ -13,6 +13,7 @@ function setup(){
     drawMap(mapBoard);
     canvas.parent('board');
     colonyBot = new ColonyBot(mapBoard);
+    colonyBot.rotateToNext();
     colonyBot.addCommand(colonyBot.moveForward);
     colonyBot.addCommand((colonyBot.turnLeft));
     colonyBot.addCommand(colonyBot.moveForward);
@@ -25,6 +26,8 @@ function setup(){
 }
 
 function draw(){
+    background(255,255,255);
+    drawMap(colonyBot.mapBoard);
     drawSprites();
     colonyBot.draw();
 }
@@ -39,10 +42,6 @@ function drawMap(mapBoard){
         stroke(255,0,0);
         strokeWeight(4);
         line(fromLoc.x,fromLoc.y,toLoc.x,toLoc.y)
-        const drawSite=(location)=>{
-            fill(255,255,0);
-            ellipse(location.x,location.y,20,20);
-        };
     };
     mapBoard.sites.forEach(site=>{drawSite(site.location)});
     mapBoard.roads.forEach(road=>{
@@ -53,40 +52,5 @@ function drawMap(mapBoard){
 }
 
 
-
-
-function moveForward(sprite){
-    let dir = ship.rotation* (Math.PI / 180);
-    let deltaX = Math.cos(dir)*5;
-    let deltaY = Math.sin(dir)*5;
-    let newX = ship.position.x + deltaX;
-    let newY = ship.position.y + deltaY;
-    ship.position.x=newX;
-    ship.position.y=newY;
-    redraw();
-}
-
-function moveBackward(sprite){
-    let dir = ship.rotation* (Math.PI / 180);
-    let deltaX = Math.cos(dir)*5;
-    let deltaY = Math.sin(dir)*5;
-    let newX = ship.position.x - deltaX;
-    let newY = ship.position.y - deltaY;
-    ship.position.x=newX;
-    ship.position.y=newY;
-    redraw();
-}
-
-function turnLeft(sprite){
-    let newDir=ship.rotation-90;
-    ship.rotation=newDir;
-    redraw();
-}
-
-function turnRight(sprite){
-    let newDir=ship.rotation+90;
-    ship.rotation=newDir;
-    redraw();
-}
 
 

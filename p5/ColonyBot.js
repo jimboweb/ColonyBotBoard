@@ -20,17 +20,18 @@ class ColonyBot{
     };
 
     isAtNextSite=()=>{
-        const nextSite = map.sites[this.currentSiteNumber];
-        const xOffset=Math.abs(this.sprite.location.x-nextSite.location.x);
-        const yOffset=Math.abs(this.sprite.location.y-nextSite.location.y);
-        return(xOffset<5&&yOffset<5);
+        const nextSite = this.mapBoard.sites[this.currentSiteNumber];
+        const xOffset=Math.abs(this.sprite.position.x-nextSite.location.x);
+        const yOffset=Math.abs(this.sprite.position.y-nextSite.location.y);
+        const distToNextSite = Math.hypot(xOffset,yOffset);
+        return(distToNextSite<50);
     };
 
     draw=()=>{
         if(!this.moving){
             const currentSite = this.mapBoard.sites[this.currentSiteNumber];
             this.location = currentSite.location;
-            this.sprite.location = this.location;
+            this.sprite.position = this.location;
             this.rotateToNext();
             this.nextCommand();
         } else if(this.isAtNextSite()){
@@ -57,12 +58,10 @@ class ColonyBot{
     moveForward=()=>{
         this.sprite.setSpeed(this.speed,this.sprite.rotation);
         this.moving = true;
-        this.nextCommand();
     };
     moveBackward=()=>{
         this.sprite.setSpeed(-this.speed,this.sprite.rotation);
         this.moving = true;
-        this.nextCommand();
     };
     nextCommand = () =>{
         if(!this.commandQueue.isEmpty()){
