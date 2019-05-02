@@ -20,17 +20,17 @@ class ColonyBot{
     };
 
     isAtNextSite=()=>{
-        const nextSite = this.mapBoard.sites[this.currentSiteNumber];
+        const nextSite = this.mapBoard.sites[this.nextSiteNumber];
         const xOffset=Math.abs(this.sprite.position.x-nextSite.location.x);
         const yOffset=Math.abs(this.sprite.position.y-nextSite.location.y);
         const distToNextSite = Math.hypot(xOffset,yOffset);
-        return(distToNextSite<50);
+        return(distToNextSite<5);
     };
 
     draw=()=>{
         if(!this.moving){
             const currentSite = this.mapBoard.sites[this.currentSiteNumber];
-            this.location = currentSite.location;
+            this.location = {x:currentSite.location.x,y:currentSite.location.y};
             this.sprite.position = this.location;
             this.rotateToNext();
             this.nextCommand();

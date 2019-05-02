@@ -23,6 +23,7 @@ function setup(){
     colonyBot.addCommand(colonyBot.moveForward);
     colonyBot.nextCommand();
     //noLoop();
+
 }
 
 function draw(){
@@ -34,16 +35,22 @@ function draw(){
 
 
 function drawMap(mapBoard){
-    const drawSite=(location)=>{
+    const drawSite=(site)=>{
+        const location = site.location;
         fill(255,255,0);
+        stroke(0,0,0);
         ellipse(location.x,location.y,20,20);
+        textSize(16);
+        fill(0,0,0);
+        stroke(255,255,255);
+        text(site.index,location.x,location.y)
     };
     const drawRoad = (fromLoc, toLoc)=>{
         stroke(255,0,0);
         strokeWeight(4);
-        line(fromLoc.x,fromLoc.y,toLoc.x,toLoc.y)
+        line(fromLoc.x,fromLoc.y,toLoc.x,toLoc.y);
     };
-    mapBoard.sites.forEach(site=>{drawSite(site.location)});
+    mapBoard.sites.forEach(site=>{drawSite(site)});
     mapBoard.roads.forEach(road=>{
         const fromSite = mapBoard.sites[road.sites[0]];
         const toSite= mapBoard.sites[road.sites[1]];
