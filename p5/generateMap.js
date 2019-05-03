@@ -67,6 +67,8 @@ class Map{
         this.roads=roads;
         this.sitesToRoads = getSitesToRoads(sites,roads);
     }
+    //fixme 190503: it's getting the wrong site here, instead of [0,1] it gets [0,2]
+    //because [idx] is the index of the site in the map, not of where it is in the adjacent array
     getConnectingRoad=(site,idx)=>this.sitesToRoads[site][idx];
     getAngleByIndex=(site,idx)=>{
         const road = this.getConnectingRoad(site,idx);
@@ -199,7 +201,7 @@ function testMap(){
 function getPregeneratedMap(){
      let sites = [
         new Site(0,[1,2,3,5],{x:300,y:150}),
-        new Site(1, [10,9,0,6,12],{x:333,y:87}),
+        new Site(1, [10,9,0,6,12],{x:500,y:87}),
         new Site(2,[0,6,3],{x:390,y:210}),
         new Site(3,[0,2,4,15],{x:300,y:210}),
         new Site(4,[3,5,11,14,15],{x:215,y:205}),
