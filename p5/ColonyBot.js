@@ -35,12 +35,16 @@ class ColonyBot{
             this.rotateToNext();
             this.nextCommand();
         } else if(this.isAtNextSite()){
+            this.currentSiteNumber=this.nextSiteNumber;
+            //fixme 190504: conceptual problem: what's the next site by default?
             this.moving=false;
         }
     };
 
     turn=(amount)=>{
-        this.nextSiteNumber = ((this.currentSiteNumber%amount)+amount)%amount;
+        const currentSite = this.mapBoard.sites[this.currentSiteNumber];
+        const numAdj = currentSite.adjacent.length;
+        this.nextSiteNumber = currentSite.adjacent[((this.currentSiteNumber%numAdj)+amount)%numAdj];
         this.rotateToNext();
         this.nextCommand();
     };

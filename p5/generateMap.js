@@ -31,53 +31,32 @@ class Road{
     constructor(connectedSites){
         const twoSites = connectedSites.length === 2;
         const isSite=(s) => s instanceof Site;
-        const getAngle = (fromPoint,toPoint)=>
-        {
-            const deltaX = toPoint.x-fromPoint.x;
-            const deltaY = toPoint.y-fromPoint.y;
-            return Math.atan2(deltaY,deltaX)*180/Math.PI;
-        }
         if (!(twoSites && isSite(connectedSites[0]) && isSite(connectedSites[1]))) {
             throw('the sites of a road must be an array of two sites')
         }
         this.sites = [connectedSites[0].index,connectedSites[1].index];
-        this.angles = connectedSites.map(
-            (thisSite,idx)=> {
-                const otherSiteIndex = (idx+1)%2;
-                const otherSite = connectedSites[otherSiteIndex];
-                return getAngle(thisSite.location,otherSite.location)
-            }
-        )
     }
 }
 
 class Map{
     constructor(sites, roads){
-        const getSitesToRoads=(sites, roads)=>{
-            const rtrn = sites.map(
-                site=>roads.filter(
-                    road=>road.sites.indexOf(site.index)!==-1
-                )
-            )
-            return rtrn;
-        };
 
         //todo: make that isArrayOfType thing and test these
         this.sites=sites;
         this.roads=roads;
-        this.sitesToRoads = getSitesToRoads(sites,roads);
     }
-    //fixme 190503: it's getting the wrong site here, instead of [0,1] it gets [0,2]
-    //because [idx] is the index of the site in the map, not of where it is in the adjacent array
-    getConnectingRoad=(site,idx)=>this.sitesToRoads[site][idx];
+    getAngle = (fromPoint,toPoint)=>
+    {
+        const deltaX = toPoint.x-fromPoint.x;
+        const deltaY = toPoint.y-fromPoint.y;
+        return Math.atan2(deltaY,deltaX)*180/Math.PI;
+    };
+
     getAngleByIndex=(site,idx)=>{
-        const road = this.getConnectingRoad(site,idx);
-        const angleIndex= road.sites.indexOf(site);
-        if(angleIndex<0){
-            throw 'reference error in sitesToRoads array';
-        }
-        return road.angles[angleIndex];
-    }
+        const thisSite = this.sites[site];
+        const otherSite = this.sites[idx];
+        return this.getAngle(thisSite.location,otherSite.location);
+    };
 }
 
 function DrawSites(input){
@@ -201,7 +180,7 @@ function testMap(){
 function getPregeneratedMap(){
      let sites = [
         new Site(0,[1,2,3,5],{x:300,y:150}),
-        new Site(1, [10,9,0,6,12],{x:500,y:87}),
+        new Site(1, [10,9,0,6,12],{x:330,y:87}),
         new Site(2,[0,6,3],{x:390,y:210}),
         new Site(3,[0,2,4,15],{x:300,y:210}),
         new Site(4,[3,5,11,14,15],{x:215,y:205}),
