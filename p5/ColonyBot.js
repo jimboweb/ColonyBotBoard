@@ -41,6 +41,8 @@ class ColonyBot{
         }
     };
 
+    //todo 190506: time to get rid of 'moveForward' and 'moveBackward'. moving will either be 'left[n]' or 'right[n]'
+
     turn=(amount)=>{
         const currentSite = this.mapBoard.sites[this.currentSiteNumber];
         const numAdj = currentSite.adjacent.length;

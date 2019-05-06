@@ -19,9 +19,11 @@ class Queue{
 
 
 class Site {
-    constructor(index, adjacent,location){
+    constructor(index, adjacent,location,angles){
         this.index = index;
-        this.adjacent = adjacent;
+        this.adjacent = adjacent.map(
+            (adj,idx)=>new AdjacentSite(adj.index,angles[idx])
+        );
         this.depth=undefined;
         this.location = location?location:{x:undefined,y:undefined};
     }
@@ -40,11 +42,39 @@ class Road{
 
 class Map{
     constructor(sites, roads){
-
+        const locations = this.getLocations(sites);
+        const angles = this.getAngles(sites, locations);
         //todo: make that isArrayOfType thing and test these
-        this.sites=sites;
+        this.sites=sites.map(
+            (site,idx)=>new Site(site.index, site.adjacent, locations[idx],angles[idx])
+        );
         this.roads=roads;
     }
+    getLocations=(sites) => [
+        {x:300,y:150},
+        {x:330,y:87},
+        {x:390,y:210},
+        {x:300,y:210},
+        {x:215,y:205},
+        {x:210,y:90},
+        {x:423,y:117},
+        {x:480,y:290},
+        {x:540,y:120},
+        {x:480,y:30},
+        {x:270,y:30},
+        {x:120,y:120},
+        {x:150,y:30},
+        {x:50,y:213},
+        {x:110,y:270},
+        {x:270,y:270}
+    ];
+
+    getAngles =(sites,locations)=>sites.map(
+        site=>site.adjacesnt.map(
+            adj=>getAngle(locations[site.index],locations[adj])
+        )
+    )
+
     getAngle = (fromPoint,toPoint)=>
     {
         const deltaX = toPoint.x-fromPoint.x;
@@ -57,6 +87,13 @@ class Map{
         const otherSite = this.sites[idx];
         return this.getAngle(thisSite.location,otherSite.location);
     };
+}
+
+class AdjacentSite{
+    constructor(index,angle){
+        this.index=index;
+        this.angle=angle;
+    }
 }
 
 function DrawSites(input){
@@ -179,22 +216,22 @@ function testMap(){
 
 function getPregeneratedMap(){
      let sites = [
-        new Site(0,[1,2,3,5],{x:300,y:150}),
-        new Site(1, [10,9,0,6,12],{x:330,y:87}),
-        new Site(2,[0,6,3],{x:390,y:210}),
-        new Site(3,[0,2,4,15],{x:300,y:210}),
-        new Site(4,[3,5,11,14,15],{x:215,y:205}),
-        new Site(5,[0,4,12],{x:210,y:90}),
-        new Site(6,[1,2,7],{x:423,y:117}),
-        new Site(7,[6,8,9,15],{x:480,y:290}),
-        new Site(8,[7],{x:540,y:120}),
-        new Site(9,[1,7],{x:480,y:30}),
-        new Site(10,[1,12],{x:270,y:30}),
-        new Site(11,[4,12,13],{x:120,y:120}),
-        new Site(12,[1,5,10,11],{x:150,y:30}),
-        new Site(13,[11],{x:50,y:213}),
-        new Site(14,[4],{x:110,y:270}),
-        new Site(15,[3,7,4],{x:270,y:270})
+         {index:0,adjacent:[1,2,3,5]},
+        {index:1, adjacent:[10,9,0,6,12]},
+        {index:2,adjacent:[0,6,3]},
+        {index:3,adjacent:[0,2,4,15]},
+        {index:4,adjacent:[3,5,11,14,15]},
+        {index:5,adjacent:[0,4,12]},
+        {index:6,adjacent:[1,2,7]},
+        {index:7,adjacent:[6,8,9,15]},
+        {index:8,adjacent:[7]},
+        {index:9,adjacent:[1,7]},
+        {index:10,adjacent:[1,12]},
+        {index:11,adjacent:[4,12,13]},
+        {index:12,adjacent:[1,5,10,11]},
+        {index:13,adjacent:[11]},
+        {index:14,adjacent:[4]},
+        {index:15,adjacent:[3,7,4]}
     ];
     let roads = DrawRoads(sites);
     return new Map(sites,roads);
