@@ -15,9 +15,6 @@ class ColonyBot{
 
     addCommand=(fn)=>this.commandQueue.addCommand(fn);
 
-    rotateToNext=()=>{
-        this.sprite.rotation=this.mapBoard.getAngleByIndex(this.currentSiteNumber, this.nextSiteNumber);
-    };
 
     isAtNextSite=()=>{
         const nextSite = this.mapBoard.sites[this.nextSiteNumber];
@@ -32,7 +29,6 @@ class ColonyBot{
             const currentSite = this.mapBoard.sites[this.currentSiteNumber];
             this.location = {x:currentSite.location.x,y:currentSite.location.y};
             this.sprite.position = this.location;
-            this.rotateToNext();
             this.nextCommand();
         } else if(this.isAtNextSite()){
             this.currentSiteNumber=this.nextSiteNumber;
@@ -41,34 +37,29 @@ class ColonyBot{
         }
     };
 
-    //todo 190506: time to get rid of 'moveForward' and 'moveBackward'. moving will either be 'left[n]' or 'right[n]'
-
     turn=(amount)=>{
-        const currentSite = this.mapBoard.sites[this.currentSiteNumber];
-        const numAdj = currentSite.adjacent.length;
-        this.nextSiteNumber = currentSite.adjacent[((this.currentSiteNumber%numAdj)+amount)%numAdj];
-        this.rotateToNext();
+        const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent;
+        if (amount!==0){
+            const filteredAdj = amount>0?
+                adjSites.filter(adjSite=>adjSite.angle>=this.sprite.rotation):
+                adjSites.filter(adjSite=>adjSite.angle<this.sprite.rotation).reverse();
+            const pointTowards = filteredAdj[Math.abs(amount)-1];
+            this.sprite.rotation=pointTowards.angle;
+            this.nextSiteNumber=pointTowards.index;
+            this.sprite.setSpeed(this.speed,this.sprite.rotation);
+            this.moving = true;
+        }
         this.nextCommand();
     };
 
-    turnLeft=()=>{
-        this.turn(-1);
-        this.nextCommand();
+    turnLeft=(amount)=>{
+        this.turn(amount?-amount:-1);
     };
 
-    turnRight=()=>{
-        this.turn(1);
-        this.nextCommand();
+    turnRight=(amount)=>{
+        this.turn(amount?amount:1);
     };
 
-    moveForward=()=>{
-        this.sprite.setSpeed(this.speed,this.sprite.rotation);
-        this.moving = true;
-    };
-    moveBackward=()=>{
-        this.sprite.setSpeed(-this.speed,this.sprite.rotation);
-        this.moving = true;
-    };
     nextCommand = () =>{
         if(!this.commandQueue.isEmpty()){
             this.commandQueue.nextCommand();

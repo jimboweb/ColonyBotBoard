@@ -13,14 +13,9 @@ function setup(){
     drawMap(mapBoard);
     canvas.parent('board');
     colonyBot = new ColonyBot(mapBoard);
-    colonyBot.rotateToNext();
-    colonyBot.addCommand(colonyBot.moveForward);
     colonyBot.addCommand((colonyBot.turnLeft));
-    colonyBot.addCommand(colonyBot.moveForward);
-    colonyBot.addCommand(colonyBot.moveForward);
     colonyBot.addCommand(colonyBot.turnRight);
     colonyBot.addCommand(colonyBot.turnRight);
-    colonyBot.addCommand(colonyBot.moveForward);
     colonyBot.nextCommand();
     //noLoop();
 
