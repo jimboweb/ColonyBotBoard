@@ -22,7 +22,9 @@ class Site {
     constructor(index, adjacent,location,angles){
         this.index = index;
         this.adjacent = adjacent.map(
-            (adj,idx)=>new AdjacentSite(adj.index,angles[idx])
+            (adj,idx)=>new AdjacentSite(adj,angles[idx])
+        ).sort(
+            (first,second)=>first.angle-second.angle
         );
         this.depth=undefined;
         this.location = location?location:{x:undefined,y:undefined};
@@ -32,8 +34,7 @@ class Site {
 class Road{
     constructor(connectedSites){
         const twoSites = connectedSites.length === 2;
-        const isSite=(s) => s instanceof Site;
-        if (!(twoSites && isSite(connectedSites[0]) && isSite(connectedSites[1]))) {
+        if (!(twoSites)) {
             throw('the sites of a road must be an array of two sites')
         }
         this.sites = [connectedSites[0].index,connectedSites[1].index];
@@ -69,18 +70,18 @@ class Map{
         {x:270,y:270}
     ];
 
-    getAngles =(sites,locations)=>sites.map(
-        site=>site.adjacesnt.map(
-            adj=>getAngle(locations[site.index],locations[adj])
-        )
-    )
-
     getAngle = (fromPoint,toPoint)=>
     {
         const deltaX = toPoint.x-fromPoint.x;
         const deltaY = toPoint.y-fromPoint.y;
         return Math.atan2(deltaY,deltaX)*180/Math.PI;
     };
+
+    getAngles =(sites,locations)=>sites.map(
+        site=>site.adjacent.map(
+            adj=>this.getAngle(locations[site.index],locations[adj])
+        )
+    )
 
     getAngleByIndex=(site,idx)=>{
         const thisSite = this.sites[site];
