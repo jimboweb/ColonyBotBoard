@@ -34,6 +34,7 @@ class ColonyBot{
             this.currentSiteNumber=this.nextSiteNumber;
             //fixme 190504: conceptual problem: what's the next site by default?
             this.moving=false;
+            this.nextCommand();
         }
     };
 
@@ -49,7 +50,6 @@ class ColonyBot{
             this.sprite.setSpeed(this.speed,this.sprite.rotation);
             this.moving = true;
         }
-        this.nextCommand();
     };
 
     turnLeft=(amount)=>{
