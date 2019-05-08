@@ -9,12 +9,48 @@
     <script src="p5/generateMap.js"></script>
     <script src="p5/ColonyBot.js"></script>
     <script src="p5/commandQueue.js"></script>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
+    <xml id="toolbox" style="display: none">
+        <block type="left"></block>
+        <block type="right"></block>
+    </xml>
     <section id='board'>
 
     </section>
+    <section id='blocks'>
+
+    </section>
+    <div id="buttons" style="display:flex">
+        <div id="showCodeButton"><button onclick="showCode()">Show Code</button> </div>
+        <div id="runCodeButton"><button onclick="runCode()">Run Code</button> </div>
+    </div>
+
     <script>
+        const workspace = Blockly.inject('blocks', {toolbox: document.getElementById('toolbox')});
+
+        function showCode() {
+            //Generate JavaScript code and display it.
+            Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+            const code = Blockly.JavaScript.workspaceToCode(workspace);
+            alert(code);
+        }
+
+        function runCode() {
+            //Generate JavaScript code and run it.
+            window.LoopTrap = 1000;
+            Blockly.JavaScript.INFINITE_LOOP_TRAP =
+                'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
+            const code = Blockly.JavaScript.workspaceToCode(workspace);
+            Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
+            try {
+                eval(code);
+            } catch (e) {
+                alert(e);
+            }
+        }
+
     </script>
 </body>
 </html>
