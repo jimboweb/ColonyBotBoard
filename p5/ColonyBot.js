@@ -41,6 +41,7 @@ class ColonyBot{
     turn=(amount)=>{
         const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent;
         if (amount!==0){
+            //fixme 190509: this doesn't work when I have to go "around the circle", so filter isn't the solution
             const filteredAdj = amount>0?
                 adjSites.filter(adjSite=>adjSite.angle>=this.sprite.rotation):
                 adjSites.filter(adjSite=>adjSite.angle<this.sprite.rotation).reverse();
