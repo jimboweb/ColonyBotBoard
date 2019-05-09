@@ -13,10 +13,11 @@ function setup(){
     drawMap(mapBoard);
     canvas.parent('board');
     colonyBot = new ColonyBot(mapBoard);
-    colonyBot.addCommand((colonyBot.turnLeft));
-    colonyBot.addCommand(colonyBot.turnRight);
-    colonyBot.addCommand(colonyBot.turnRight);
-    colonyBot.nextCommand();
+    // colonyBot.addCommand((colonyBot.turnLeft));
+    // colonyBot.addCommand(colonyBot.turnRight);
+    // colonyBot.addCommand(colonyBot.turnRight);
+    //todo 190509: problem here is that nextCommand() will probably run before the blocks evaluate, need to do something about that
+    //colonyBot.nextCommand();
     //noLoop();
 
 }

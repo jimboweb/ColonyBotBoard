@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>ColonyBot Board Demo</title>
+    <link rel="stylesheet" href="main.css">
     <script src="p5/p5.js"></script>
     <script src="p5/p5.play.js"></script>
     <script src="p5/boardScript.js"></script>
     <script src="p5/generateMap.js"></script>
     <script src="p5/ColonyBot.js"></script>
     <script src="p5/commandQueue.js"></script>
-    <link rel="stylesheet" href="main.css">
+    <script src="blockly/blockly_compressed.js"></script>
+    <script src="blockly/javascript_compressed.js"></script>
+    <script src="blockly/blocks/customBlockScript.js"></script>
+    <script src="blockly/blocks/motion.js"></script>
 </head>
 <body>
     <xml id="toolbox" style="display: none">
@@ -42,13 +46,19 @@
             window.LoopTrap = 1000;
             Blockly.JavaScript.INFINITE_LOOP_TRAP =
                 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-            const code = Blockly.JavaScript.workspaceToCode(workspace);
-            Blockly.JavaScript.INFINITE_LOOP_TRAP = null;
-            try {
-                eval(code);
-            } catch (e) {
-                alert(e);
-            }
+            const code = Blockly.JavaScript.workspaceToCode(workspace).toString().split(';\n');
+            code.forEach(
+                line=>{
+                    try{
+                        const fn = line.split('()')[0]
+                        eval(`colonyBot.addCommand(${fn})`);
+                    }catch(err){
+                        console.log(`error adding command ${line} to command queue: ${err}`);
+                    }
+                }
+            )
+            colonyBot.nextCommand();
+
         }
 
     </script>
