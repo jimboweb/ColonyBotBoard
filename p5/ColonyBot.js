@@ -39,17 +39,24 @@ class ColonyBot{
     };
 
     turn=(amount)=>{
+        //fixme 190510: this still isn't quite right because it'll skip the first road to the right
+        const posDegrees = (degrees)=>(degrees%360+360)%360
         const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent;
+        const clockAngle = posDegrees(this.sprite.rotation);
+        const getPositionInAngles = (clockAngle,angles)=>{
+            const posAngles = angles.map(posDegrees);
+            posAngles.forEach(
+                (angle,index)=>{if (angle>clockAngle){return index}}
+            );
+            return posAngles.length+1;
+        }
         if (amount!==0){
-            //fixme 190509: this doesn't work when I have to go "around the circle", so filter isn't the solution
-            const filteredAdj = amount>0?
-                adjSites.filter(adjSite=>adjSite.angle>=this.sprite.rotation):
-                adjSites.filter(adjSite=>adjSite.angle<this.sprite.rotation).reverse();
-            const pointTowards = filteredAdj[Math.abs(amount)-1];
-            this.sprite.rotation=pointTowards.angle;
-            this.nextSiteNumber=pointTowards.index;
-            this.sprite.setSpeed(this.speed,this.sprite.rotation);
-            this.moving = true;
+            const positionInAngles = getPositionInAngles(clockAngle,adjSites.map(
+                adjSite=>adjSite.angle)
+                .map(posDegrees)
+            );
+            const newPosition = (positionInAngles+amount%adjSites.length+adjSites.length)%adjSites.length;
+            this.sprite.rotation=adjSites[newPosition].angle;
         }
     };
 
