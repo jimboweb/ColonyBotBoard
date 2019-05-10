@@ -55,7 +55,8 @@ class ColonyBot{
                 adjSite=>adjSite.angle)
                 .map(posDegrees)
             );
-            const newPosition = (positionInAngles+amount%adjSites.length+adjSites.length)%adjSites.length;
+            const newPosition = (positionInAngles+amount%adjSites.length+adjSites.length)%adjSites.length
+                                        + angle>0?-1:0;
             this.sprite.rotation=adjSites[newPosition].angle;
         }
     };
