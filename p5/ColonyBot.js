@@ -39,22 +39,18 @@ class ColonyBot{
     };
 
     turn=(amount)=>{
-        //fixme 190510: this still isn't quite right because it'll skip the first road to the right
         const posDegrees = (degrees)=>(degrees%360+360)%360
         const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent;
         const clockAngle = posDegrees(this.sprite.rotation);
-        const getPositionInAngles = (clockAngle,angles)=>{
-            const posAngles = angles.map(posDegrees);
-            posAngles.forEach(
-                (angle,index)=>{if (angle>clockAngle){return index}}
-            );
-            return posAngles.length+1;
+        const getPositionInAngles = (clockAngle,adj)=>{
+            return adj
+                    .map(adjSite=>adjSite.angle)
+                    .map(posDegrees).concat(clockAngle)
+                    .sort()
+                    .indexOf(clockAngle);
         }
         if (amount!==0){
-            const positionInAngles = getPositionInAngles(clockAngle,adjSites.map(
-                adjSite=>adjSite.angle)
-                .map(posDegrees)
-            );
+            const positionInAngles = getPositionInAngles(clockAngle,adjSites);
             const newPosition = (positionInAngles+amount%adjSites.length+adjSites.length)%adjSites.length
                                         + angle>0?-1:0;
             this.sprite.rotation=adjSites[newPosition].angle;
