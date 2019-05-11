@@ -42,7 +42,7 @@ class ColonyBot{
         const clockMod = (val, modulus)=>(val%modulus+modulus)%modulus;
         const posDegrees = degrees=>clockMod(degrees,360);
         const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent
-            .map(adj=>Object.assign({angle:posDegrees(adj.angle)}))
+            .map(adj=>Object.assign({index: adj.index,angle:posDegrees(adj.angle)}))
             .sort((a1,a2)=>a1.angle-a2.angle);
         const clockAngle = posDegrees(this.sprite.rotation);
         const getPositionInAngles = (clockAngle,adj)=>{
