@@ -46,14 +46,18 @@
             window.LoopTrap = 1000;
             Blockly.JavaScript.INFINITE_LOOP_TRAP =
                 'if (--window.LoopTrap == 0) throw "Infinite loop.";\n';
-            const code = Blockly.JavaScript.workspaceToCode(workspace).toString().split(';\n');
+            const code = Blockly.JavaScript.workspaceToCode(workspace)
+                .toString()
+                .split(';\n')
+                .filter(line=>line.length>0);
             code.forEach(
                 line=>{
                     try{
-                        const fn = line.split('()')[0]
-                        eval(`colonyBot.addCommand(${fn})`);
+                        const fn = line.split('()')[0];
+                        const codeString = `colonyBot.addCommand(${fn})`
+                        eval(codeString);
                     }catch(err){
-                        console.log(`error adding command ${line} to command queue: ${err}`);
+                        console.log(`error adding command ${fn} to command queue: ${err}`);
                     }
                 }
             )

@@ -39,22 +39,27 @@ class ColonyBot{
     };
 
     turn=(amount)=>{
-        const posDegrees = (degrees)=>(degrees%360+360)%360
-        const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent;
+        const clockMod = (val, modulus)=>(val%modulus+modulus)%modulus;
+        const posDegrees = degrees=>clockMod(degrees,360);
+        const adjSites = this.mapBoard.sites[this.currentSiteNumber].adjacent
+            .map(adj=>Object.assign({angle:posDegrees(adj.angle)}))
+            .sort((a1,a2)=>a1.angle-a2.angle);
         const clockAngle = posDegrees(this.sprite.rotation);
         const getPositionInAngles = (clockAngle,adj)=>{
             return adj
                     .map(adjSite=>adjSite.angle)
-                    .map(posDegrees).concat(clockAngle)
+                    .concat(clockAngle)
                     .sort()
                     .indexOf(clockAngle);
         }
         if (amount!==0){
             const positionInAngles = getPositionInAngles(clockAngle,adjSites);
-            const newPosition = (positionInAngles+amount%adjSites.length+adjSites.length)%adjSites.length
-                                        + angle>0?-1:0;
+            const newPosition = clockMod(positionInAngles+amount>0?-1:0,adjSites.length);
+            this.nextSiteNumber=adjSites[newPosition].index;
             this.sprite.rotation=adjSites[newPosition].angle;
         }
+        this.sprite.setSpeed(5,this.sprite.rotation);
+        this.moving=true;
     };
 
     turnLeft=(amount)=>{
