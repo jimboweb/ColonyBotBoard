@@ -37,6 +37,34 @@ Blockly.defineBlocksWithJsonArray([
     "helpUrl": "",
     "tooltip": "turn right by 1 path"
   },
+  {
+    "type": "rightBy",
+    "message0": "right by %1",
+    "args0": [{
+      "type": "field_number",
+      "name": "AMOUNT",
+      "value": 2
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour":160,
+    "helpUrl": "",
+    "tooltip": "turn right by AMOUNT paths"
+  },
+  {
+    "type": "leftBy",
+    "message0": "left by %1",
+    "args0": [{
+      "type": "field_number",
+      "name": "AMOUNT",
+      "value": 2
+    }],
+    "previousStatement": null,
+    "nextStatement": null,
+    "colour":160,
+    "helpUrl": "",
+    "tooltip": "turn left by AMOUNT paths"
+  },
 
 ])
 

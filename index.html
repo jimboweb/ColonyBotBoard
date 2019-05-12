@@ -19,6 +19,8 @@
     <xml id="toolbox" style="display: none">
         <block type="left"></block>
         <block type="right"></block>
+        <block type="leftBy"></block>
+        <block type="rightBy"></block>
     </xml>
     <section id='board'>
 
@@ -53,7 +55,7 @@
             code.forEach(
                 line=>{
                     try{
-                        const fn = line.split('()')[0];
+                        const fn = `()=>${line}`
                         const codeString = `colonyBot.addCommand(${fn})`
                         eval(codeString);
                     }catch(err){
