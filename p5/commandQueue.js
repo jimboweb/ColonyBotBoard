@@ -11,7 +11,7 @@ class CommandQueue{
     };
 
     nextCommand=()=>{
-        this.sequence.pop()();
+        this.sequence.shift()();
     }
 
     size=()=>this.sequence.length;
