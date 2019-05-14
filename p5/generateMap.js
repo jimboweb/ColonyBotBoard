@@ -106,10 +106,10 @@ function DrawSites(input){
         .map(addDepth);
 }
 
-const addDepth=(site,i,arr)=>Object.assign(site, {depth:shortestPath(arr,site.index,0)})
+const addDepth=(site,i,arr)=>Object.assign(site, {depth:shortestPath(arr,site.index,0)});
 
-function DrawMap(input){
-    let sites = DrawSites(input);
+function createMap(){
+    let sites = generateSites();
     let roads = DrawRoads(sites);
     return new Map(sites, roads);
 }
@@ -211,31 +211,99 @@ function shortestPath(graph,start, finish){
     return traceBack(path,start,finish);
 }
 
-function testMap(){
-    return DrawMap(data);
+// function testMap(){
+//     return createMap(data);
+// }
+//
+// function getPregeneratedMap(){
+//      let sites = [
+//          {index:0,adjacent:[1,2,3,5]},
+//         {index:1, adjacent:[10,9,0,6,12]},
+//         {index:2,adjacent:[0,6,3]},
+//         {index:3,adjacent:[0,2,4,15]},
+//         {index:4,adjacent:[3,5,11,14,15]},
+//         {index:5,adjacent:[0,4,12]},
+//         {index:6,adjacent:[1,2,7]},
+//         {index:7,adjacent:[6,8,9,15]},
+//         {index:8,adjacent:[7]},
+//         {index:9,adjacent:[1,7]},
+//         {index:10,adjacent:[1,12]},
+//         {index:11,adjacent:[4,12,13]},
+//         {index:12,adjacent:[1,5,10,11]},
+//         {index:13,adjacent:[11]},
+//         {index:14,adjacent:[4]},
+//         {index:15,adjacent:[3,7,4]}
+//     ];
+//     let roads = DrawRoads(sites);
+//     return new Map(sites,roads);
+//
+// }
+
+function randInt() {
+    let max, min = 0;
+    if (arguments.length === 2) {
+        min = arguments[0];
+        max = arguments[1];
+    } else {
+        max = arguments[0];
+    }
+    const range = max-min;
+    return Math.floor(Math.random(range)+min);
 }
 
-function getPregeneratedMap(){
-     let sites = [
-         {index:0,adjacent:[1,2,3,5]},
-        {index:1, adjacent:[10,9,0,6,12]},
-        {index:2,adjacent:[0,6,3]},
-        {index:3,adjacent:[0,2,4,15]},
-        {index:4,adjacent:[3,5,11,14,15]},
-        {index:5,adjacent:[0,4,12]},
-        {index:6,adjacent:[1,2,7]},
-        {index:7,adjacent:[6,8,9,15]},
-        {index:8,adjacent:[7]},
-        {index:9,adjacent:[1,7]},
-        {index:10,adjacent:[1,12]},
-        {index:11,adjacent:[4,12,13]},
-        {index:12,adjacent:[1,5,10,11]},
-        {index:13,adjacent:[11]},
-        {index:14,adjacent:[4]},
-        {index:15,adjacent:[3,7,4]}
-    ];
-    let roads = DrawRoads(sites);
-    return new Map(sites,roads);
 
+
+
+semiGaussianRandom=(min,max,depth=4)=>{
+    let total=0;
+    for(let i=0;i<depth;i++){
+        total+=randInt(min,max);
+    }
+    return Math.floor(total/depth);
 }
 
+function generateSites(averageFrequency,connectionFrequecy=0.25,boardWidth=600,boardHeight=300,horizontalDivisions=8,verticalDivisions=4){
+    let nextIndex=0;
+    let sites = [];
+    let xBlockSize = boardWidth/horizontalDivisions;
+    let yBlockSize = boardHeight/verticalDivisions;
+    let segments = new Array(horizontalDivisions);
+    segments.fill(new Array(verticalDivisions));
+    for(let col=0;col<horizontalDivisions;col++){
+        const xMin = col*xBlockSize;
+        for(let row=0;row<verticalDivisions;row++){
+            const yMin = row*yBlockSize;
+            const numSites = semiGaussianRandom(2,5);
+            segments[col][row]=[];
+            for(let siteNum=0;siteNum<numSites;siteNum++){
+                const xCoord = randInt(xMin,xMin+xBlockSize);
+                const yCoord = randInt(yMin,yMin+yBlockSize);
+                segments[col][row].push(nextIndex);
+                sites.push(new Site(nextIndex++,[],{x:xCoord,y:yCoord},[]))
+            }
+        }
+    }
+    for(var col = 0;col<segments.length-1;col++){
+        for(let row=0;row<col.lenghth-1;row++){
+            segments[col][row].forEach(
+                siteIndex=>{
+                    for(let i=col;i<col+1;i++){
+                        for(let j=row;j<row+1;j++){
+                            segments[i][j].forEach(
+                                otherSiteIndex=>{
+                                    if(Math.random()<connectionFrequecy){
+                                        const site = sites[col][row];
+                                        const otherSite = sites[i][j];
+                                        site.adjacent.push(otherSiteIndex);
+                                        otherSite.adjacent.push(siteIndex);
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+            )
+        }
+    }
+    return sites;
+}

@@ -9,7 +9,7 @@ function preload(){
 function setup(){
     let canvas = createCanvas(600,300);
     background(255,255,255);
-    const mapBoard = getPregeneratedMap();
+    const mapBoard = createMap();
     drawMap(mapBoard);
     canvas.parent('board');
     colonyBot = new ColonyBot(mapBoard);
