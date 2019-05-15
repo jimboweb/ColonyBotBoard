@@ -10,6 +10,7 @@ function setup(){
     let canvas = createCanvas(600,300);
     background(255,255,255);
     const mapBoard = createMap();
+    //fixme 190515: for some reason when it gets to mapBoard all the sites over 16 have undefined locations even though they are there before it's returned...
     drawMap(mapBoard);
     canvas.parent('board');
     colonyBot = new ColonyBot(mapBoard);
